@@ -26,7 +26,7 @@ def CreationProjectile(event):
 
 def Bouger(PPX,PPY,projectile,i):
     global vitesse_projectile, r
-    if PPY-TailleVaisseau+r-15*i>-Hauteur:
+    if PPY-TailleVaisseau+r-15*i>-Hauteur-1000:
         Canevas.coords(projectile,PPX-TailleVaisseau+r,PPY-TailleVaisseau+r-vitesse_projectile*i,PPX+TailleVaisseau-r,PPY+TailleVaisseau-r-vitesse_projectile*i)
         print(PPY-TailleVaisseau+r-15*i)
         Canevas.after(100,Bouger,PPX,PPY,projectile,i+1)
