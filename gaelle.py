@@ -26,20 +26,24 @@ def CreationProjectile(event):
 
 def bouger(PPX,PPY,projectile,i):
     global vitesse_projectile, r
-    verif=collision_projectile(PPX,PPY,projectile,i)
-    if verif==True:
-        Canevas.delete(projectile)
-    elif PPY-TailleVaisseau+r-vitesse_projectile*i>0:
-        Canevas.coords(projectile,PPX-TailleVaisseau+r,PPY-TailleVaisseau+r-vitesse_projectile*i,PPX+TailleVaisseau-r,PPY+TailleVaisseau-r-vitesse_projectile*i)
+    for t in liste_protection :
+        verif=collision_projectile(PPX,PPY,projectile,i,t.positionx,t.positiony,t.taille)
+        if verif==True:
+            Canevas.delete(projectile)
+            t.supprimer_rectangle()
+            liste_protection.remove(t)
+        verif=False
+    if PPY-TailleVaisseau+r-vitesse_projectile*i>0:
+        Canevas.move(projectile,0,-vitesse_projectile)
+        ''' Canevas.coords(projectile,PPX-TailleVaisseau+r,PPY-TailleVaisseau+r-vitesse_projectile*i,PPX+TailleVaisseau-r,PPY+TailleVaisseau-r-vitesse_projectile*i) '''
         Canevas.after(100,bouger,PPX,PPY,projectile,i+1)
     else:
         Canevas.delete(projectile)
 
 
-def collision_projectile(PPX,PPY,projectile,i):
-    if PPX-TailleVaisseau+r>=positionx_protection+20 and PPX+TailleVaisseau-r<=TailleProtection*2+positionx_protection+20:
-        if PPY-TailleVaisseau+r-vitesse_projectile*i<TailleProtection*2+positiony_protection+20:
-            Canevas.delete(protection)
+def collision_projectile(PPX,PPY,projectile,i,tx,ty,tt):
+    if PPX-TailleVaisseau+r>=tx and PPX+TailleVaisseau-r<=tt*2+tx:
+        if PPY-TailleVaisseau+r-vitesse_projectile*i<tt*2+ty:
             return(True)
     return(False)
 
