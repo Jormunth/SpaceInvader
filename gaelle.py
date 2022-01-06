@@ -46,6 +46,22 @@ def collision_projectile(PPX,PPY,projectile,i):
 mw=Tk()
 mw.title("Vaisseau")
 
+class Protection:
+    def __init__(self,positionx,positiony,taille,Canevas):
+        self.positionx=positionx
+        self.positiony=positiony
+        self.taille=taille
+        self.Canevas=Canevas
+        self.rectangle = None
+    def creer_rectangle(self):
+        self.rectangle = self.Canevas.create_rectangle(self.positionx,self.positiony,self.taille*2+self.positionx,self.taille*2+self.positiony,fill='pink')
+    def supprimer_rectangle(self):
+        if self.rectangle:
+            self.Canevas.delete(self.rectangle)
+        
+        
+        
+        
 vitesse_projectile=5
 r=15
 Largeur=480
@@ -59,9 +75,15 @@ TailleProtection=15
 
 Canevas=Canvas(mw,width=Largeur,height=Hauteur,bg='white')
 
-liste_protection_x=[0,20,25,0,20,25]
+p1=Protection(positionx_protection,positiony_protection,15,Canevas)
+p2=Protection(20,40,15,Canevas)
 
-protection=Canevas.create_rectangle(POSX+20,POSY+20,TailleProtection*2+POSX+20,TailleProtection*2+POSY+20,fill='pink')
+liste_protection=[p1,p2]
+
+
+p1.creer_rectangle()
+p2.creer_rectangle()
+
 
 Vaisseau=Canevas.create_rectangle(POSX,POSY,TailleVaisseau*2+POSX,TailleVaisseau*2+POSY,fill='maroon')
 Canevas.focus_set()
