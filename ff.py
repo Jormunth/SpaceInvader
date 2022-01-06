@@ -49,27 +49,39 @@ DY = 30*2
 Enemy = ZoneDeJeu.create_oval(X-Rayon, Y-Rayon, X+Rayon, Y+Rayon, fill="red", outline="black", width=5)
 
 ProjectileEnemy = []
-ProjectileEnemy.append(ZoneDeJeu.create_line(X+Rayon, Y+Rayon, X+Rayon, Y+Rayon+30, width=6))
 
-"""
-def autoTir(ProjectileEnemy):
+ProjectileEnemy22 = ZoneDeJeu.create_line(X+Rayon, Y+Rayon, X+Rayon, Y+Rayon+30, width=6)
+
+def autoTir():
 
     ProjectileEnemy.append(ZoneDeJeu.create_line(X+Rayon, Y+Rayon, X+Rayon, Y+Rayon+30, width=6))
-    FrameGauche.after(1500,autoTir(ProjectileEnemy))
-    deplacementEnemy(ProjectileEnemy)
-"""
+
+    ProjectileEnemylast=ProjectileEnemy[-1]
+    deplacementProjectEautoTir(ProjectileEnemylast)
+    FrameGauche.after(1500,autoTir)
 
 
-def deplacementEnemy(ProjectileEnemy):
+def deplacementProjectEautoTir(ProjectileEnemylast):
     global PX,PY,DX,DY,Rayon
 
     PY += 30
 
-    ZoneDeJeu.coords(ProjectileEnemy[0], PX+Rayon, PY-Rayon, PX+Rayon, PY+Rayon+30)
+    ZoneDeJeu.coords(ProjectileEnemylast, PX+Rayon, PY-Rayon, PX+Rayon, PY+Rayon+30)
     
-    FrameGauche.after(20,deplacementEnemy)
+    FrameGauche.after(20,deplacementProjectEautoTir)
 
-def deplacement():
+
+
+def deplacementProjectE():
+    global PX,PY,DX,DY,Rayon
+
+    PY += 30
+
+    ZoneDeJeu.coords(ProjectileEnemy22, PX+Rayon, PY-Rayon, PX+Rayon, PY+Rayon+30)
+    
+    FrameGauche.after(20,deplacementProjectE)
+
+def deplacementEnemy():
     global X,Y,DX,DY,Rayon,Largeur,Hauteur
 
     if X+Rayon+DX > Largeur:
@@ -85,11 +97,12 @@ def deplacement():
     X = X+DX
 
     ZoneDeJeu.coords(Enemy, X-Rayon, Y-Rayon, X+Rayon, Y+Rayon)
-    FrameGauche.after(20,deplacement)
+    FrameGauche.after(20,deplacementEnemy)
 
-deplacement()
-deplacementEnemy(ProjectileEnemy)
-""" autoTir(ProjectileEnemy)
- """
+deplacementEnemy()
+deplacementProjectE()
+autoTir()
+
 mw.mainloop()
- 
+
+
