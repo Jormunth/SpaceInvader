@@ -4,6 +4,7 @@ from tkinter import *
 
 def Clavier(event):
     global POSX,POSY
+    print(event)
     touche=event.keysym   
     if touche=='z' and POSY-TailleVaisseau!=0:
         POSY-=20
