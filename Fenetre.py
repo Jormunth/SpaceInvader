@@ -4,69 +4,92 @@ from projectile import *
 from protection import *
 
 class Fenetre:
-    def __init__(self,Largeur,Hauteur):
+    def __init__(self,Largeur,Hauteur,tailleVaisseau):
         self.Largeur=Largeur
         self.Hauteur=Hauteur
         self.Vaisseau=None
-        self.ma_fenetre2=None
+        self.ZoneDeJeu=None
         self.mw=None
         self.projectile=[]
         self.rectangle=[]
+        self.tailleVaisseau=tailleVaisseau
     
+
+
     def creer_fenetre(self,TailleVaisseau,POSX,POSY,Tk,Canvas,Button):
         self.mw=Tk()
-        self.mw.title("Vaisseau2")
-        self.ma_fenetre2=Canvas(self.mw,width=self.Largeur,height=self.Hauteur,bg='white')
-        self.ma_fenetre2.pack(padx=5,pady=5)
-        self.Vaisseau=self.ma_fenetre2.create_rectangle(POSX,POSY,TailleVaisseau*2+POSX,TailleVaisseau*2+POSY,fill='maroon')
-        ButtonQuit=Button(self.mw,text="Quitter",fg='black',command=self.mw.destroy)
-        ButtonQuit.pack()
+        self.mw.title('Space Invader')
+        self.mw['bg']='grey'
+        self.mw.geometry('1900x1008+0+0')
+
+        FrameDroit = Frame(self.mw)
+        FrameDroit.pack(side="right")
+
+        ButtonJouer = Button(FrameDroit, text="Jouer", height=5, width=30,)
+        ButtonJouer.pack(pady=50)
+
+        ButtonParametre = Button(FrameDroit, text="Paramètre", height=5, width=30, command=print("paramètre"))
+        ButtonParametre.pack(pady=50)
+
+        ButtonQuitter = Button(FrameDroit, text="Quitter", height=5, width=30, command=self.mw.destroy)
+        ButtonQuitter.pack(side='bottom', pady=50)
+
+        FrameGauche = Frame(self.mw)
+        FrameGauche.pack(side="left")
+
+
+        self.ZoneDeJeu = Canvas(FrameGauche, width=1600, height =950)
+        Terrain = PhotoImage(file = "image/terrainFond.png")
+        self.ZoneDeJeu.create_image(0,0,anchor=NW,image=Terrain)
+        self.ZoneDeJeu.pack(padx=10, pady=10)
+
         
+        self.Vaisseau=self.ZoneDeJeu.create_rectangle(POSX,POSY,TailleVaisseau*2+POSX,TailleVaisseau*2+POSY,fill='maroon')
     
     def Clavier(self,event):
         u=0
         v=0
-        coords_vaisseau=self.ma_fenetre2.coords(self.Vaisseau)
-        if event.keysym=='z' and vaisseau.POSY!=0:
+        coords_vaisseau=self.ZoneDeJeu.coords(self.Vaisseau)
+        if event.keysym=='z' and coords_vaisseau[1]!=0:
             u=0
-            v=-10
-        if event.keysym=='s' and vaisseau.POSY+2*vaisseau.TailleVaisseau!=self.Hauteur:
+            v=-20
+        if event.keysym=='s' and coords_vaisseau[3]!=self.Hauteur:
             u=0
-            v=10
-        if event.keysym=='q' and vaisseau.POSX!=0:
-            u=-10
+            v=20
+        if event.keysym=='q' and coords_vaisseau[0]!=0:
+            u=-20
             v=0
-        if event.keysym=='d' and vaisseau.POSX+2*vaisseau.TailleVaisseau!=self.Largeur:
-            u=10
+        if event.keysym=='d' and coords_vaisseau[2]!=self.Largeur:
+            u=20
             v=0
-        vaisseau.deplacer(u,v)
-        self.ma_fenetre2.move(self.Vaisseau,u,v)
+        self.ZoneDeJeu.move(self.Vaisseau,u,v)
     
     def creer_projectile(self,event):
-        projectile=Projectile(vaisseau.POSX+vaisseau.TailleVaisseau,vaisseau.POSY,15,20)
-        self.projectile.append(self.ma_fenetre2.create_oval(projectile.px-vaisseau.TailleVaisseau+projectile.rayon,projectile.py-vaisseau.TailleVaisseau+projectile.rayon,projectile.px+vaisseau.TailleVaisseau-projectile.rayon,projectile.py+vaisseau.TailleVaisseau-projectile.rayon,fill='purple'))
+        coords_vaisseau=self.ZoneDeJeu.coords(self.Vaisseau)
+        projectile=Projectile((coords_vaisseau[0]+coords_vaisseau[2])/2,coords_vaisseau[1],20,20)
+        self.projectile.append(self.ZoneDeJeu.create_oval(projectile.px-self.tailleVaisseau+projectile.rayon,projectile.py-self.tailleVaisseau+projectile.rayon,projectile.px+self.tailleVaisseau-projectile.rayon,projectile.py+self.tailleVaisseau-projectile.rayon,fill='purple'))
 
-    def bouger(self,projectile):
+    def bouger(self,projectile,ma_fenetre):
         for t in self.projectile:
-            coords_projectile=self.ma_fenetre2.coords(t)
+            coords_projectile=self.ZoneDeJeu.coords(t)
             for o in self.rectangle:
-                coords_protection=self.ma_fenetre2.coords(o)
-                verif=ma_fenetre.collision_protection(coords_protection[0],coords_protection[1],p2.taille,coords_projectile[0],coords_projectile[1])
+                coords_protection=self.ZoneDeJeu.coords(o)
+                verif=ma_fenetre.collision_protection(coords_protection[0],coords_protection[1],18,coords_projectile[0],coords_projectile[1])
                 if verif ==True:
-                    self.ma_fenetre2.delete(o)
+                    self.ZoneDeJeu.delete(o)
                     self.rectangle.remove(o)
                     if t in self.projectile:
-                        self.ma_fenetre2.delete(t)
+                        self.ZoneDeJeu.delete(t)
                         self.projectile.remove(t)
             if coords_projectile[1]>0:
-                self.ma_fenetre2.move(t,0,-projectile.vitesse)
+                self.ZoneDeJeu.move(t,0,-projectile.vitesse)
             else:
-                self.ma_fenetre2.delete(t)
+                self.ZoneDeJeu.delete(t)
                 self.projectile.remove(t)
-        self.ma_fenetre2.after(100,ma_fenetre.bouger,projectile)
+        self.ZoneDeJeu.after(100,ma_fenetre.bouger,projectile,ma_fenetre)
 
     def creer_rectangle(self,px,py,taille):
-        self.rectangle.append(self.ma_fenetre2.create_rectangle(px,py,px+2*taille,py+2*taille,fill='pink'))
+        self.rectangle.append(self.ZoneDeJeu.create_rectangle(px,py,px+2*taille,py+2*taille,fill='pink'))
 
     def collision_protection(self,px,py,taille,cpx,cpy):
         if cpx>=px-taille and cpx<=px+2*taille:
@@ -74,38 +97,11 @@ class Fenetre:
                 return(True)
         return(False)
 
-    def forme1(self,x,y,taille_carré,nombre_carréx,nombre_carré_y):
+    def forme1(self,x,y,taille_carré,nombre_carréx,nombre_carré_y,ma_fenetre):
         for i in range(nombre_carréx):
             for t in range(nombre_carré_y):
-                print(y+t*taille_carré)
-                print(x+i*taille_carré)
                 ma_fenetre.creer_rectangle(x+i*2*taille_carré,y+t*2*taille_carré,taille_carré)
         
 
         
 
-
-ma_fenetre=Fenetre(480,320)
-vaisseau=Vaisseau(240,160,20)
-
-ma_fenetre.creer_fenetre(vaisseau.TailleVaisseau,vaisseau.POSX,vaisseau.POSY,Tk,Canvas,Button)
-#je créer ma fenêtre dans ma classe, et la stocke dans ma_fenetre2
-
-ma_fenetre.ma_fenetre2.focus_force()
-
-ma_fenetre.ma_fenetre2.bind('<Key>',ma_fenetre.Clavier)
-ma_fenetre.ma_fenetre2.bind('<Button-1>',ma_fenetre.creer_projectile)
-
-p2=Protection(20,40,18)
-p3=Protection(40,60,18)
-liste_protection=[p2,p3]
-""" for p in liste_protection:
-    ma_fenetre.creer_rectangle(p.positionx,p.positiony,p.taille) """
-
-ma_fenetre.forme1(60,30,18,3,6)
-projectile=Projectile(vaisseau.POSX+vaisseau.TailleVaisseau,vaisseau.POSY,15,15)
-
-ma_fenetre.ma_fenetre2.after(20,ma_fenetre.bouger,projectile)
-
-
-ma_fenetre.mw.mainloop()

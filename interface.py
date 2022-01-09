@@ -25,22 +25,22 @@ ButtonQuitter.pack(side='bottom', pady=50)
 FrameGauche = Frame(mw)
 FrameGauche.pack(side="left")
 
-ZoneDeJeu = Canvas(FrameGauche, width=1600, height =950, bg="white")
+ZoneDeJeu = Canvas(FrameGauche, width=1600, height =950)
 ZoneDeJeu.pack(padx=10, pady=10)
-
 ZoneDeJeu.create_image(0,0,anchor=NW,image=Terrain)
 
 
 LARGEUR=1600
 HAUTEUR = 300
-RAYON = 30
 
-vitesse = 10
+difficulty = 5
 
-difficulty = 2
+vitesse = 7+(difficulty/2)
+
+
 tag = 0
 Placement = difficulty+1
-DY = 2*RAYON
+DY = 43
 nbEnnemie = difficulty
 
 frameCntEnemie = 5
@@ -116,7 +116,7 @@ def autoTir(difficulty,ProjectileEnemy):
     """ ProjectileEnemylast=ZoneDeJeu.create_line(coordsEnemyX, coordsEnemyY, coordsEnemyX, coordsEnemyY+30, width=6) """
     ProjectileEnemy.append(ProjectileEnemylast)
 
-    FrameGauche.after(1500,autoTir,difficulty,ProjectileEnemy)
+    FrameGauche.after(750,autoTir,difficulty,ProjectileEnemy)
     deplacementProjectEautoTir(ProjectileEnemylast,coordsEnemyY)
 
 
