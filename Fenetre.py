@@ -12,7 +12,6 @@ class Fenetre:
         self.mw=None
         self.projectile=[]
         self.rectangle=[]
-        #self.bind=None
     
     def creer_fenetre(self,TailleVaisseau,POSX,POSY,Tk,Canvas,Button):
         self.mw=Tk()
@@ -50,6 +49,15 @@ class Fenetre:
     def bouger(self,projectile):
         for t in self.projectile:
             coords_projectile=self.ma_fenetre2.coords(t)
+            for o in self.rectangle:
+                coords_protection=self.ma_fenetre2.coords(o)
+                verif=ma_fenetre.collision_protection(coords_protection[0],coords_protection[1],p2.taille,coords_projectile[0],coords_projectile[1])
+                if verif ==True:
+                    self.ma_fenetre2.delete(o)
+                    self.rectangle.remove(o)
+                    if t in self.projectile:
+                        self.ma_fenetre2.delete(t)
+                        self.projectile.remove(t)
             if coords_projectile[1]>0:
                 self.ma_fenetre2.move(t,0,-projectile.vitesse)
             else:
@@ -59,6 +67,21 @@ class Fenetre:
 
     def creer_rectangle(self,px,py,taille):
         self.rectangle.append(self.ma_fenetre2.create_rectangle(px,py,px+2*taille,py+2*taille,fill='pink'))
+
+    def collision_protection(self,px,py,taille,cpx,cpy):
+        if cpx>=px-taille and cpx<=px+2*taille:
+            if cpy<=py+taille*3:
+                return(True)
+        return(False)
+
+    def forme1(self,x,y,taille_carré,nombre_carréx,nombre_carré_y):
+        for i in range(nombre_carréx):
+            for t in range(nombre_carré_y):
+                print(y+t*taille_carré)
+                print(x+i*taille_carré)
+                ma_fenetre.creer_rectangle(x+i*2*taille_carré,y+t*2*taille_carré,taille_carré)
+        
+
         
 
 
@@ -73,9 +96,13 @@ ma_fenetre.ma_fenetre2.focus_force()
 ma_fenetre.ma_fenetre2.bind('<Key>',ma_fenetre.Clavier)
 ma_fenetre.ma_fenetre2.bind('<Button-1>',ma_fenetre.creer_projectile)
 
-p2=Protection(20,40,15)
-ma_fenetre.creer_rectangle(p2.positionx,p2.positiony,p2.taille)
+p2=Protection(20,40,18)
+p3=Protection(40,60,18)
+liste_protection=[p2,p3]
+""" for p in liste_protection:
+    ma_fenetre.creer_rectangle(p.positionx,p.positiony,p.taille) """
 
+ma_fenetre.forme1(60,30,18,3,6)
 projectile=Projectile(vaisseau.POSX+vaisseau.TailleVaisseau,vaisseau.POSY,15,15)
 
 ma_fenetre.ma_fenetre2.after(20,ma_fenetre.bouger,projectile)
