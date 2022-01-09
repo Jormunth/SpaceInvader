@@ -29,15 +29,15 @@ class Fenetre:
         coords_vaisseau=self.ma_fenetre2.coords(self.Vaisseau)
         if event.keysym=='z' and vaisseau.POSY!=0:
             u=0
-            v=-20
+            v=-10
         if event.keysym=='s' and vaisseau.POSY+2*vaisseau.TailleVaisseau!=self.Hauteur:
             u=0
-            v=20
+            v=10
         if event.keysym=='q' and vaisseau.POSX!=0:
-            u=-20
+            u=-10
             v=0
         if event.keysym=='d' and vaisseau.POSX+2*vaisseau.TailleVaisseau!=self.Largeur:
-            u=20
+            u=10
             v=0
         vaisseau.deplacer(u,v)
         self.ma_fenetre2.move(self.Vaisseau,u,v)
