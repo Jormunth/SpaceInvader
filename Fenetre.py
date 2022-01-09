@@ -9,7 +9,7 @@ class Fenetre:
         self.Vaisseau=None
         self.ma_fenetre2=None
         self.mw=None
-        self.projectile=None
+        self.projectile=[]
         #self.bind=None
     
     def creer_fenetre(self,TailleVaisseau,POSX,POSY,Tk,Canvas,Button):
@@ -40,12 +40,20 @@ class Fenetre:
             v=0
         self.ma_fenetre2.move(self.Vaisseau,u,v)
     
-    def creer_projectile(self):
-        coords_vaisseau=self.ma_fenetre2(self.Vaisseau)
+    def creer_projectile(self,event):
+        coords_vaisseau=self.ma_fenetre2.coords(self.Vaisseau)
+        projectile=Projectile((coords_vaisseau[0]+coords_vaisseau[2])/2,coords_vaisseau[1],15,20)
+        self.projectile.append(self.ma_fenetre2.create_oval(projectile.px-vaisseau.TailleVaisseau+projectile.rayon,projectile.py-vaisseau.TailleVaisseau+projectile.rayon,projectile.px+vaisseau.TailleVaisseau-projectile.rayon,projectile.py+vaisseau.TailleVaisseau-projectile.rayon,fill='purple'))
 
-        projectile=Projectile(20,20,5)
-        self.projectile=self.ma_fenetre2.create_oval(projectile.px-vaisseau.TailleVaisseau+projectile.rayon,projectile.py-vaisseau.TailleVaisseau+projectile.rayon,projectile.px+vaisseau.TailleVaisseau-projectile.rayon,projectile.py+vaisseau.TailleVaisseau-projectile.rayon,fill='purple')
-        return(1)
+    def bouger(self,projectile):
+        for t in self.projectile:
+            coords_projectile=self.ma_fenetre2.coords(t)
+            if coords_projectile[1]>0:
+                self.ma_fenetre2.move(t,0,-projectile.vitesse)
+            else:
+                self.ma_fenetre2.delete(t)
+                self.projectile.remove(t)
+        self.ma_fenetre2.after(100,ma_fenetre.bouger,projectile)
 
 
 ma_fenetre=Fenetre(480,320)
@@ -59,5 +67,9 @@ ma_fenetre.ma_fenetre2.focus_force()
 ma_fenetre.ma_fenetre2.bind('<Key>',ma_fenetre.Clavier)
 ma_fenetre.ma_fenetre2.bind('<Button-1>',ma_fenetre.creer_projectile)
 
+coords_vaisseau=ma_fenetre.ma_fenetre2.coords(ma_fenetre.Vaisseau)
+projectile=Projectile((coords_vaisseau[0]+coords_vaisseau[2])/2,coords_vaisseau[1],15,15)
+
+ma_fenetre.ma_fenetre2.after(20,ma_fenetre.bouger,projectile)
 
 ma_fenetre.mw.mainloop()
