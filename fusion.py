@@ -2,13 +2,13 @@ from tkinter import *
 from vaisseau import *
 from projectile import *
 from protection import *
-import Fenetre as fen
+import classTkinter as fen
 
 
 
 
 
-ma_fenetre=fen.Fenetre(1900,1008,15)
+ma_fenetre=fen.Tkinter(1600,950,15)
 vaisseau=Vaisseau(800,900,20)
 
 ma_fenetre.creer_fenetre(vaisseau.TailleVaisseau,vaisseau.POSX,vaisseau.POSY,Tk,Canvas,Button)
@@ -25,34 +25,20 @@ liste_protection=[p2,p3]
 """ for p in liste_protection:
     ma_fenetre.creer_rectangle(p.positionx,p.positiony,p.taille) """
 
-ma_fenetre.forme1(60,700,18,6,2,ma_fenetre)
+ma_fenetre.forme1(60,700,18,33,2,ma_fenetre)
 projectile=Projectile(vaisseau.POSX+vaisseau.TailleVaisseau,vaisseau.POSY,15,15)
 
 ma_fenetre.ZoneDeJeu.after(20,ma_fenetre.bouger,projectile,ma_fenetre)
 
+difficulty = 5
+vitesse = 7+(difficulty/2)
+DY = 43+(difficulty*4)
+
+ma_fenetre.creerEnemy(difficulty,DY)
+ma_fenetre.deplacementEnemy(vitesse,DY,difficulty)
+ma_fenetre.autoTir(difficulty,ma_fenetre)
 
 ma_fenetre.mw.mainloop()
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

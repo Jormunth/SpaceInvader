@@ -33,14 +33,14 @@ ZoneDeJeu.create_image(0,0,anchor=NW,image=Terrain)
 LARGEUR=1600
 HAUTEUR = 300
 
-difficulty = 5
+difficulty = 2
 
 vitesse = 7+(difficulty/2)
 
 
 tag = 0
 Placement = difficulty+1
-DY = 43
+DY = 43+(difficulty*4)
 nbEnnemie = difficulty
 
 frameCntEnemie = 5
@@ -64,8 +64,6 @@ while nbEnnemie >= 1:
 
     nbEnnemie -= 1
 
-    XtremG = myEnemyList[0].getPosX()
-    XtremD = myEnemyList[-1].getPosX()
 
 
 
@@ -99,7 +97,7 @@ def deplacementEnemy(myEnemyList,myEnemy,vitesse,DY,LARGEUR,difficulty):
     FrameGauche.after(20,deplacementEnemy,myEnemyList,myEnemy,vitesse,DY,LARGEUR,difficulty)
 
 
-difficulty
+
 
 
 ProjectileEnemy = []
@@ -122,7 +120,6 @@ def autoTir(difficulty,ProjectileEnemy):
 
 def deplacementProjectEautoTir(ProjectileEnemylast,coordsEnemyY):
 
-    coordsEnemyY += 30
     ZoneDeJeu.move(ProjectileEnemylast, 0, 20)
     
     FrameGauche.after(20,deplacementProjectEautoTir,ProjectileEnemylast,coordsEnemyY)
