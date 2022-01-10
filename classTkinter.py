@@ -170,10 +170,11 @@ class Tkinter:
                     if t in self.ProjectileEnemy:
                         self.ProjectileEnemy.remove(t)
 
-            if coords_tir[1]<self.Hauteur:
+            if coords_tir[1] - 15 < self.Hauteur:
                 self.ZoneDeJeu.move(ProjectileEnemylast, 0, 20)
                 
             else:
+
                 if t in self.ProjectileEnemy:
                     self.ZoneDeJeu.delete(t)
                     self.ProjectileEnemy.remove(t)
@@ -206,9 +207,16 @@ class Tkinter:
     def creer_projectile(self,event):
         coords_vaisseau=self.ZoneDeJeu.coords(self.Vaisseau)
         projectile=Projectile((coords_vaisseau[0]+coords_vaisseau[0])/2,coords_vaisseau[1],20,20)
-        self.projectile.append(self.ZoneDeJeu.create_oval(projectile.px-self.tailleVaisseau+projectile.rayon,projectile.py-self.tailleVaisseau+projectile.rayon,projectile.px+self.tailleVaisseau-projectile.rayon,projectile.py+self.tailleVaisseau-projectile.rayon,fill='purple'))
+        
+        self.loadKatana = Image.open("image/Katana/Katana.png")
+        self.loaddedKatana =ImageTk.PhotoImage(self.loadKatana)
+        self.projectile.append(self.ZoneDeJeu.create_image(projectile.px,projectile.py, image = self.loaddedKatana))
+        
+
+        """ self.projectile.append(self.ZoneDeJeu.create_oval(projectile.px-self.tailleVaisseau+projectile.rayon,projectile.py-self.tailleVaisseau+projectile.rayon,projectile.px+self.tailleVaisseau-projectile.rayon,projectile.py+self.tailleVaisseau-projectile.rayon,fill='purple')) """
 
     def bouger(self,projectile,ma_fenetre,difficulty):
+        print(self.projectile)
         for t in self.projectile:
             coords_projectile=self.ZoneDeJeu.coords(t)
             k=0
