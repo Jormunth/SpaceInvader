@@ -147,7 +147,14 @@ class Tkinter:
         
         for t in self.ProjectileEnemy:
             coords_tir = self.ZoneDeJeu.coords(t)
-            
+            coords_vaisseau=self.ZoneDeJeu.coords(self.Vaisseau)
+            verif_collisionvaisseau=ma_fenetre.collision_enemy_protection(coords_vaisseau[0],coords_vaisseau[1],39,coords_tir[0],coords_tir[1])
+            if verif_collisionvaisseau==True:
+                self.vie=self.vie-1
+                print(self.vie)
+                self.ZoneDeJeu.delete(t)
+                if t in self.ProjectileEnemy:
+                    self.ProjectileEnemy.remove(t)
             for o in self.rectangle:
                 coords_protection=self.ZoneDeJeu.coords(o)
                 verif=ma_fenetre.collision_enemy_protection(coords_protection[0],coords_protection[1],18,coords_tir[0],coords_tir[1])
