@@ -195,15 +195,18 @@ class Tkinter:
     def bouger(self,projectile,ma_fenetre,difficulty):
         for t in self.projectile:
             coords_projectile=self.ZoneDeJeu.coords(t)
-            for i in range(difficulty):
-                verif_ennemy=ma_fenetre.collision_protection(self.myEnemyList[i].getPosX()-3,self.myEnemyList[i].getPosY(),6,coords_projectile[0],coords_projectile[1])
+            k=0
+            for i in range(len(self.myEnemyList)):
+                verif_ennemy=ma_fenetre.collision_protection(self.myEnemyList[k].getPosX()-3,self.myEnemyList[k].getPosY(),6,coords_projectile[0],coords_projectile[1])
                 if verif_ennemy ==True:
-                    del self.myEnemyList[i]
-                    self.ZoneDeJeu.delete(self.myEnemy[i])
-                    del self.myEnemy[i]
+                    del self.myEnemyList[k]
+                    self.ZoneDeJeu.delete(self.myEnemy[k])
+                    del self.myEnemy[k]
                     if t in self.projectile:
                         self.ZoneDeJeu.delete(t)
                         self.projectile.remove(t)
+                    k=k-1
+                k=k+1
             for o in self.rectangle:
                 coords_protection=self.ZoneDeJeu.coords(o)
                 verif=ma_fenetre.collision_protection(coords_protection[0],coords_protection[1],18,coords_projectile[0],coords_projectile[1])
