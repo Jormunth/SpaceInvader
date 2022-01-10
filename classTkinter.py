@@ -59,8 +59,13 @@ class Tkinter:
         """ self.ZoneDeJeu.create_image(0,0,anchor=NW,image=Terrain) """
         self.ZoneDeJeu.pack(padx=10, pady=10)
 
-    def creerVaisseau(self,TailleVaisseau,POSX,POSY):
-        self.Vaisseau=self.ZoneDeJeu.create_rectangle(POSX,POSY,TailleVaisseau*2+POSX,TailleVaisseau*2+POSY,fill='maroon')
+    def creerVaisseau(self,POSX,POSY):
+        """ self.Vaisseau=self.ZoneDeJeu.create_rectangle(POSX,POSY,TailleVaisseau*2+POSX,TailleVaisseau*2+POSY,fill='maroon') """
+                
+        self.loadJoueur = Image.open("image/Samurai/Samurai.png")
+        self.loaddedJoueurs =ImageTk.PhotoImage(self.loadJoueur)
+        self.Vaisseau = self.ZoneDeJeu.create_image(POSX,POSY, image = self.loaddedJoueurs)
+
 
     def creerEnemy(self,difficulty,DY):
                 
@@ -133,7 +138,7 @@ class Tkinter:
         coordsEnemyX = self.myEnemyList[rand].getPosX()
         coordsEnemyY = self.myEnemyList[rand].getPosY()
         
-        self.loadShuriken = Image.open("image/Shuriken/Shuriken.gif")
+        self.loadShuriken = Image.open("image/Shuriken/Shuriken.png")
         self.loaddedShuriken =ImageTk.PhotoImage(self.loadShuriken)
         ProjectileEnemylast=self.ZoneDeJeu.create_image(coordsEnemyX,coordsEnemyY, image = self.loaddedShuriken)
 
@@ -187,20 +192,20 @@ class Tkinter:
         if event.keysym=='z' and coords_vaisseau[1]>0:
             u=0
             v=-20
-        if event.keysym=='s' and coords_vaisseau[3]<self.Hauteur+10:
+        if event.keysym=='s' and coords_vaisseau[1]<self.Hauteur+10:
             u=0
             v=20
         if event.keysym=='q' and coords_vaisseau[0]>0:
             u=-20
             v=0
-        if event.keysym=='d' and coords_vaisseau[2]<self.Largeur:
+        if event.keysym=='d' and coords_vaisseau[0]<self.Largeur:
             u=20
             v=0
         self.ZoneDeJeu.move(self.Vaisseau,u,v)
     
     def creer_projectile(self,event):
         coords_vaisseau=self.ZoneDeJeu.coords(self.Vaisseau)
-        projectile=Projectile((coords_vaisseau[0]+coords_vaisseau[2])/2,coords_vaisseau[1],20,20)
+        projectile=Projectile((coords_vaisseau[0]+coords_vaisseau[0])/2,coords_vaisseau[1],20,20)
         self.projectile.append(self.ZoneDeJeu.create_oval(projectile.px-self.tailleVaisseau+projectile.rayon,projectile.py-self.tailleVaisseau+projectile.rayon,projectile.px+self.tailleVaisseau-projectile.rayon,projectile.py+self.tailleVaisseau-projectile.rayon,fill='purple'))
 
     def bouger(self,projectile,ma_fenetre,difficulty):
@@ -208,7 +213,7 @@ class Tkinter:
             coords_projectile=self.ZoneDeJeu.coords(t)
             k=0
             for i in range(len(self.myEnemyList)):
-                verif_ennemy=ma_fenetre.collision_projectilev_ennemi(self.myEnemyList[k].getPosX()-3,self.myEnemyList[k].getPosY(),39/2,coords_projectile[0],coords_projectile[1])
+                verif_ennemy=ma_fenetre.collision_projectilev_ennemi(self.myEnemyList[k].getPosX()-39/2,self.myEnemyList[k].getPosY()-45/2,39/2,45,coords_projectile[0],coords_projectile[1])
                 if verif_ennemy ==True:
                     del self.myEnemyList[k]
                     self.ZoneDeJeu.delete(self.myEnemy[k])
@@ -255,12 +260,15 @@ class Tkinter:
             for t in range(nombre_carré_y):
                 ma_fenetre.creer_rectangle(x+i*2*taille_carré,y+t*2*taille_carré,taille_carré)
 
-    def collision_projectilev_ennemi(self,px,py,taille,cpx,cpy):
-        if cpx>=px-taille and cpx<=px+2*taille:
-            if cpy<=py+taille*3:
+    def collision_projectilev_ennemi(self,px,py,taillex,tailley,cpx,cpy):
+        if cpx>=px-taillex and cpx<=px+2*taillex:
+            if cpy<=py+tailley and cpy>=py:
+                return(True)
+        return(False)
+
+    def collision_projectilee_vaisseau(self,px,py,taillex,cpx,cpy):
+        if cpx>=px-taillex and cpx<=px+2*taillex:
+            if cpy+30>=py and cpy<=py+self.tailleVaisseau:
                 return(True)
         return(False)
         
-
-        
-

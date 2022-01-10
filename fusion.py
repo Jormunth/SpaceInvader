@@ -13,7 +13,7 @@ ma_fenetre.creer_fenetre(Tk,Canvas,Button)
 #je créer ma fenêtre dans ma classe, et la stocke dans ZoneDeJeu
 ma_fenetre.create_background( )
 ma_fenetre.ZoneDeJeu.focus_force()
-ma_fenetre.creerVaisseau(vaisseau.TailleVaisseau,vaisseau.POSX,vaisseau.POSY,)
+ma_fenetre.creerVaisseau(vaisseau.POSX,vaisseau.POSY,)
 
 ma_fenetre.ZoneDeJeu.bind('<Key>',ma_fenetre.Clavier)
 ma_fenetre.ZoneDeJeu.bind('<Button-1>',ma_fenetre.creer_projectile)
@@ -24,7 +24,7 @@ liste_protection=[p2,p3]
 """ for p in liste_protection:
     ma_fenetre.creer_rectangle(p.positionx,p.positiony,p.taille) """
 
-ma_fenetre.forme1(60,700,18,33,2,ma_fenetre)
+ma_fenetre.forme1(60,700,18,30,2,ma_fenetre)
 projectile=Projectile(vaisseau.POSX+vaisseau.TailleVaisseau,vaisseau.POSY,15,15)
 
 
