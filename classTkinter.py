@@ -23,6 +23,7 @@ class Tkinter:
         self.myEnemy = []
         self.FrameGauche=None
         self.ProjectileEnemy = []
+        self.vie=3
 
     def create_background(self):
         self.loadTerrain = Image.open("image/terrainFond.png")
@@ -145,6 +146,7 @@ class Tkinter:
         
         for t in self.ProjectileEnemy:
             coords_tir = self.ZoneDeJeu.coords(t)
+            
             for o in self.rectangle:
                 coords_protection=self.ZoneDeJeu.coords(o)
                 verif=ma_fenetre.collision_enemy_protection(coords_protection[0],coords_protection[1],18,coords_tir[0],coords_tir[1])
@@ -198,7 +200,7 @@ class Tkinter:
             coords_projectile=self.ZoneDeJeu.coords(t)
             k=0
             for i in range(len(self.myEnemyList)):
-                verif_ennemy=ma_fenetre.collision_protection(self.myEnemyList[k].getPosX()-3,self.myEnemyList[k].getPosY(),6,coords_projectile[0],coords_projectile[1])
+                verif_ennemy=ma_fenetre.collision_projectilev_ennemi(self.myEnemyList[k].getPosX()-3,self.myEnemyList[k].getPosY(),39/2,coords_projectile[0],coords_projectile[1])
                 if verif_ennemy ==True:
                     del self.myEnemyList[k]
                     self.ZoneDeJeu.delete(self.myEnemy[k])
@@ -244,6 +246,12 @@ class Tkinter:
         for i in range(nombre_carréx):
             for t in range(nombre_carré_y):
                 ma_fenetre.creer_rectangle(x+i*2*taille_carré,y+t*2*taille_carré,taille_carré)
+
+    def collision_projectilev_ennemi(self,px,py,taille,cpx,cpy):
+        if cpx>=px-taille and cpx<=px+2*taille:
+            if cpy<=py+taille*3:
+                return(True)
+        return(False)
         
 
         
