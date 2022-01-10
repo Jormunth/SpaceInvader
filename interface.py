@@ -33,7 +33,7 @@ ZoneDeJeu.create_image(0,0,anchor=NW,image=Terrain)
 LARGEUR=1600
 HAUTEUR = 300
 
-difficulty = 2
+difficulty = 5
 
 vitesse = 7+(difficulty/2)
 
