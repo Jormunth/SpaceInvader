@@ -67,8 +67,12 @@ class Tkinter:
         nbEnnemie = difficulty
         vitesse =  7+(difficulty/2)
 
-        frameCntEnemie = 5
-        imageEnnemie = [PhotoImage(file='image/Ninja/animation/runRight_2.gif',format = 'gif -index %i' %(i)) for i in range(frameCntEnemie)]
+        """ frameCntEnemie = 5
+        imageEnnemie = [PhotoImage(file='image/Ninja/animation/runRight_2.gif',format = 'gif -index %i' %(i)) for i in range(frameCntEnemie)] """
+        
+        self.loadEnemy = Image.open("image/Ninja/Ninja.png")
+        self.loaddedEnemy =ImageTk.PhotoImage(self.loadEnemy)
+        
 
         while nbEnnemie >= 1:
             
@@ -77,8 +81,8 @@ class Tkinter:
             Y = self.Hauteur/20
 
             self.myEnemyList.append(e.Enemy(tag, vitesse, X, Y, DY))
-            """ self.myEnemy.append(self.ZoneDeJeu.create_image(X,Y, image = imageEnnemie[0])) """
-            self.myEnemy.append(self.ZoneDeJeu.create_line(X, Y, X, Y+30,width=6))
+            self.myEnemy.append(self.ZoneDeJeu.create_image(X,Y, image = self.loaddedEnemy))
+            """ self.myEnemy.append(self.ZoneDeJeu.create_line(X, Y, X, Y+30,width=6)) """
 
             nbEnnemie -= 1
 
