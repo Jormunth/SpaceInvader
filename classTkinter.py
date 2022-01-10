@@ -131,13 +131,13 @@ class Tkinter:
         coordsEnemyX = self.myEnemyList[rand].getPosX()
         coordsEnemyY = self.myEnemyList[rand].getPosY()
         
-        
-        ProjectileEnemylast=self.ZoneDeJeu.create_oval(coordsEnemyX+5,coordsEnemyY+5,coordsEnemyX-5,coordsEnemyY-5,fill='green')
-        self.ProjectileEnemy.append(ProjectileEnemylast)
-        self.FrameGauche.after(750,self.autoTir,difficulty,ma_fenetre)
         self.loadShuriken = Image.open("image/Shuriken/Shuriken.gif")
         self.loaddedShuriken =ImageTk.PhotoImage(self.loadShuriken)
         ProjectileEnemylast=self.ZoneDeJeu.create_image(coordsEnemyX,coordsEnemyY, image = self.loaddedShuriken)
+
+        self.ProjectileEnemy.append(ProjectileEnemylast)
+        self.FrameGauche.after(750,self.autoTir,difficulty,ma_fenetre)
+
         self.deplacementProjectEautoTir(ProjectileEnemylast,coordsEnemyY,ma_fenetre)
 
     def deplacementProjectEautoTir(self,ProjectileEnemylast,coordsEnemyY,ma_fenetre):
@@ -163,7 +163,7 @@ class Tkinter:
                     self.ZoneDeJeu.delete(t)
                     self.ProjectileEnemy.remove(t)
 
-        self.FrameGauche.after(100,self.deplacementProjectEautoTir,ProjectileEnemylast,coordsEnemyY,ma_fenetre)
+        self.FrameGauche.after(20,self.deplacementProjectEautoTir,ProjectileEnemylast,coordsEnemyY,ma_fenetre)
 
 
         
