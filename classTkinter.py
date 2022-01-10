@@ -220,8 +220,9 @@ class Tkinter:
             if coords_projectile[1]>0:
                 self.ZoneDeJeu.move(t,0,-projectile.vitesse)
             else:
-                self.ZoneDeJeu.delete(t)
-                self.projectile.remove(t)
+                if t in self.projectile:
+                    self.ZoneDeJeu.delete(t)
+                    self.projectile.remove(t)
         self.ZoneDeJeu.after(100,ma_fenetre.bouger,projectile,ma_fenetre,difficulty)
 
     def creer_rectangle(self,px,py,taille):
