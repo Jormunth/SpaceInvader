@@ -207,7 +207,7 @@ class Tkinter:
             coords_projectile=self.ZoneDeJeu.coords(t)
             k=0
             for i in range(len(self.myEnemyList)):
-                verif_ennemy=ma_fenetre.collision_projectilev_ennemi(self.myEnemyList[k].getPosX()-3,self.myEnemyList[k].getPosY(),39/2,coords_projectile[0],coords_projectile[1])
+                verif_ennemy=ma_fenetre.collision_projectilev_ennemi(self.myEnemyList[k].getPosX()-39/2,self.myEnemyList[k].getPosY(),39/2,45,coords_projectile[0],coords_projectile[1])
                 if verif_ennemy ==True:
                     del self.myEnemyList[k]
                     self.ZoneDeJeu.delete(self.myEnemy[k])
@@ -254,9 +254,9 @@ class Tkinter:
             for t in range(nombre_carré_y):
                 ma_fenetre.creer_rectangle(x+i*2*taille_carré,y+t*2*taille_carré,taille_carré)
 
-    def collision_projectilev_ennemi(self,px,py,taille,cpx,cpy):
-        if cpx>=px-taille and cpx<=px+2*taille:
-            if cpy<=py+taille*3:
+    def collision_projectilev_ennemi(self,px,py,taillex,tailley,cpx,cpy):
+        if cpx>=px-taillex and cpx<=px+2*taillex:
+            if cpy<=py+tailley and cpy>=py:
                 return(True)
         return(False)
         
