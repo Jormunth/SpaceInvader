@@ -30,7 +30,7 @@ projectile=Projectile(vaisseau.POSX+vaisseau.TailleVaisseau,vaisseau.POSY,15,15)
 
 ma_fenetre.ZoneDeJeu.after(20,ma_fenetre.bouger,projectile,ma_fenetre)
 
-difficulty = 5
+difficulty = 6
 vitesse = 7+(difficulty/2)
 DY = 43+(difficulty*4)
 

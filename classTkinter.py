@@ -130,11 +130,11 @@ class Tkinter:
 
         
         for t in self.ProjectileEnemy:
-            coords_tir = self.ZoneDeJeu.coords(ProjectileEnemylast)
+            coords_tir = self.ZoneDeJeu.coords(t)
             print(coords_tir)
             for o in self.rectangle:
                 coords_protection=self.ZoneDeJeu.coords(o)
-                verif=ma_fenetre.collision_enemy_protection(coords_protection[0],coords_protection[1],10,coords_tir[0],coords_tir[1])
+                verif=ma_fenetre.collision_enemy_protection(coords_protection[0],coords_protection[1],18,coords_tir[0],coords_tir[1])
                 if verif ==True:
                     self.ZoneDeJeu.delete(o)
                     self.rectangle.remove(o)
@@ -159,16 +159,17 @@ class Tkinter:
         u=0
         v=0
         coords_vaisseau=self.ZoneDeJeu.coords(self.Vaisseau)
-        if event.keysym=='z' and coords_vaisseau[1]!=0:
+        if event.keysym=='z' and coords_vaisseau[1]>0:
             u=0
             v=-20
-        if event.keysym=='s' and coords_vaisseau[3]!=self.Hauteur:
+        if event.keysym=='s' and coords_vaisseau[3]<self.Hauteur+10:
+            print('salut',coords_vaisseau[3])
             u=0
             v=20
-        if event.keysym=='q' and coords_vaisseau[0]!=0:
+        if event.keysym=='q' and coords_vaisseau[0]>0:
             u=-20
             v=0
-        if event.keysym=='d' and coords_vaisseau[2]!=self.Largeur:
+        if event.keysym=='d' and coords_vaisseau[2]<self.Largeur:
             u=20
             v=0
         self.ZoneDeJeu.move(self.Vaisseau,u,v)
@@ -208,7 +209,7 @@ class Tkinter:
 
     def collision_enemy_protection(self,px,py,taille,cpx,cpy):
         if cpx>=px-taille and cpx<=px+2*taille:
-            if cpy>=py+taille*3:
+            if cpy>=py:
                 return(True)
         return(False)
 
