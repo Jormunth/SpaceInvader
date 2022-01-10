@@ -131,7 +131,6 @@ class Tkinter:
         
         for t in self.ProjectileEnemy:
             coords_tir = self.ZoneDeJeu.coords(t)
-            print(coords_tir)
             for o in self.rectangle:
                 coords_protection=self.ZoneDeJeu.coords(o)
                 verif=ma_fenetre.collision_enemy_protection(coords_protection[0],coords_protection[1],18,coords_tir[0],coords_tir[1])
@@ -139,14 +138,16 @@ class Tkinter:
                     self.ZoneDeJeu.delete(o)
                     self.rectangle.remove(o)
                     self.ZoneDeJeu.delete(t)
-                    self.ProjectileEnemy.remove(t)
+                    if t in self.ProjectileEnemy:
+                        self.ProjectileEnemy.remove(t)
 
             if coords_tir[1]<self.Hauteur:
                 self.ZoneDeJeu.move(ProjectileEnemylast, 0, 20)
                 
             else:
-                self.ZoneDeJeu.delete(t)
-                self.ProjectileEnemy.remove(t)
+                if t in self.ProjectileEnemy:
+                    self.ZoneDeJeu.delete(t)
+                    self.ProjectileEnemy.remove(t)
 
         self.FrameGauche.after(100,self.deplacementProjectEautoTir,ProjectileEnemylast,coordsEnemyY,ma_fenetre)
 
@@ -163,7 +164,6 @@ class Tkinter:
             u=0
             v=-20
         if event.keysym=='s' and coords_vaisseau[3]<self.Hauteur+10:
-            print('salut',coords_vaisseau[3])
             u=0
             v=20
         if event.keysym=='q' and coords_vaisseau[0]>0:
@@ -179,9 +179,18 @@ class Tkinter:
         projectile=Projectile((coords_vaisseau[0]+coords_vaisseau[2])/2,coords_vaisseau[1],20,20)
         self.projectile.append(self.ZoneDeJeu.create_oval(projectile.px-self.tailleVaisseau+projectile.rayon,projectile.py-self.tailleVaisseau+projectile.rayon,projectile.px+self.tailleVaisseau-projectile.rayon,projectile.py+self.tailleVaisseau-projectile.rayon,fill='purple'))
 
-    def bouger(self,projectile,ma_fenetre):
+    def bouger(self,projectile,ma_fenetre,difficulty):
         for t in self.projectile:
             coords_projectile=self.ZoneDeJeu.coords(t)
+            for i in range(difficulty):
+                verif_ennemy=ma_fenetre.collision_protection(self.myEnemyList[i].getPosX()-3,self.myEnemyList[i].getPosY(),6,coords_projectile[0],coords_projectile[1])
+                if verif_ennemy ==True:
+                    del self.myEnemyList[i]
+                    self.ZoneDeJeu.delete(self.myEnemy[i])
+                    del self.myEnemy[i]
+                    if t in self.projectile:
+                        self.ZoneDeJeu.delete(t)
+                        self.projectile.remove(t)
             for o in self.rectangle:
                 coords_protection=self.ZoneDeJeu.coords(o)
                 verif=ma_fenetre.collision_protection(coords_protection[0],coords_protection[1],18,coords_projectile[0],coords_projectile[1])
@@ -196,7 +205,7 @@ class Tkinter:
             else:
                 self.ZoneDeJeu.delete(t)
                 self.projectile.remove(t)
-        self.ZoneDeJeu.after(100,ma_fenetre.bouger,projectile,ma_fenetre)
+        self.ZoneDeJeu.after(100,ma_fenetre.bouger,projectile,ma_fenetre,difficulty)
 
     def creer_rectangle(self,px,py,taille):
         self.rectangle.append(self.ZoneDeJeu.create_rectangle(px,py,px+2*taille,py+2*taille,fill='pink'))

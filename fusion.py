@@ -28,11 +28,13 @@ liste_protection=[p2,p3]
 ma_fenetre.forme1(60,700,18,33,2,ma_fenetre)
 projectile=Projectile(vaisseau.POSX+vaisseau.TailleVaisseau,vaisseau.POSY,15,15)
 
-ma_fenetre.ZoneDeJeu.after(20,ma_fenetre.bouger,projectile,ma_fenetre)
+
 
 difficulty = 6
 vitesse = 7+(difficulty/2)
 DY = 43+(difficulty*4)
+
+ma_fenetre.ZoneDeJeu.after(20,ma_fenetre.bouger,projectile,ma_fenetre,difficulty)
 
 ma_fenetre.creerEnemy(difficulty,DY)
 ma_fenetre.deplacementEnemy(vitesse,DY,difficulty)
