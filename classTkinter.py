@@ -153,7 +153,7 @@ class Tkinter:
         for t in self.ProjectileEnemy:
             coords_tir = self.ZoneDeJeu.coords(t)
             coords_vaisseau=self.ZoneDeJeu.coords(self.Vaisseau)
-            verif_collisionvaisseau=ma_fenetre.collision_enemy_protection(coords_vaisseau[0],coords_vaisseau[1],39,coords_tir[0],coords_tir[1])
+            verif_collisionvaisseau=ma_fenetre.collision_projectilee_vaisseau(coords_vaisseau[0],coords_vaisseau[1],self.tailleVaisseau,coords_tir[0]-15,coords_tir[1]-15)
             if verif_collisionvaisseau==True:
                 self.vie=self.vie-1
                 print(self.vie)
@@ -265,6 +265,16 @@ class Tkinter:
             if cpy<=py+tailley and cpy>=py:
                 return(True)
         return(False)
+
+    def collision_projectilee_vaisseau(self,px,py,taillex,cpx,cpy):
+        if cpx>=px-taillex and cpx<=px+2*taillex:
+            if cpy+30>=py and cpy<=py+self.tailleVaisseau:
+                return(True)
+        return(False)
+
+        
+
+        
 
     def collision_projectilee_vaisseau(self,px,py,taillex,cpx,cpy):
         if cpx>=px-taillex and cpx<=px+2*taillex:
