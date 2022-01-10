@@ -32,7 +32,7 @@ class Tkinter:
     
 
 
-    def creer_fenetre(self,TailleVaisseau,POSX,POSY,Tk,Canvas,Button):
+    def creer_fenetre(self,Tk,Canvas,Button):
         self.mw=Tk()
         self.mw.title('Space Invader')
         self.mw['bg']='grey'
@@ -59,6 +59,7 @@ class Tkinter:
         """ self.ZoneDeJeu.create_image(0,0,anchor=NW,image=Terrain) """
         self.ZoneDeJeu.pack(padx=10, pady=10)
 
+    def creerVaisseau(self,TailleVaisseau,POSX,POSY):
         self.Vaisseau=self.ZoneDeJeu.create_rectangle(POSX,POSY,TailleVaisseau*2+POSX,TailleVaisseau*2+POSY,fill='maroon')
 
     def creerEnemy(self,difficulty,DY):

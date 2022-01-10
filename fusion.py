@@ -9,10 +9,11 @@ import classTkinter as fen
 ma_fenetre=fen.Tkinter(1600,950,15)
 vaisseau=Vaisseau(800,900,20)
 
-ma_fenetre.creer_fenetre(vaisseau.TailleVaisseau,vaisseau.POSX,vaisseau.POSY,Tk,Canvas,Button)
+ma_fenetre.creer_fenetre(Tk,Canvas,Button)
 #je créer ma fenêtre dans ma classe, et la stocke dans ZoneDeJeu
 ma_fenetre.create_background( )
 ma_fenetre.ZoneDeJeu.focus_force()
+ma_fenetre.creerVaisseau(vaisseau.TailleVaisseau,vaisseau.POSX,vaisseau.POSY,)
 
 ma_fenetre.ZoneDeJeu.bind('<Key>',ma_fenetre.Clavier)
 ma_fenetre.ZoneDeJeu.bind('<Button-1>',ma_fenetre.creer_projectile)
