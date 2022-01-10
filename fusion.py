@@ -6,14 +6,12 @@ import classTkinter as fen
 
 
 
-
-
 ma_fenetre=fen.Tkinter(1600,950,15)
 vaisseau=Vaisseau(800,900,20)
 
 ma_fenetre.creer_fenetre(vaisseau.TailleVaisseau,vaisseau.POSX,vaisseau.POSY,Tk,Canvas,Button)
 #je créer ma fenêtre dans ma classe, et la stocke dans ZoneDeJeu
-
+ma_fenetre.create_background( )
 ma_fenetre.ZoneDeJeu.focus_force()
 
 ma_fenetre.ZoneDeJeu.bind('<Key>',ma_fenetre.Clavier)

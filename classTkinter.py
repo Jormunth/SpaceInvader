@@ -4,8 +4,12 @@ from projectile import *
 from protection import *
 import enemy as e
 import random,math
-
+from PIL import Image, ImageTk
+       
 class Tkinter:
+    '''
+    test
+    '''
     def __init__(self,Largeur,Hauteur,tailleVaisseau):
         self.Largeur=Largeur
         self.Hauteur=Hauteur
@@ -19,6 +23,11 @@ class Tkinter:
         self.myEnemy = []
         self.FrameGauche=None
         self.ProjectileEnemy = []
+
+    def create_background(self):
+        self.loadTerrain = Image.open("image/terrainFond.png")
+        self.loaddedTerrain =ImageTk.PhotoImage(self.loadTerrain)
+        self.Terrain = self.ZoneDeJeu.create_image(0,0,anchor=NW,image= self.loaddedTerrain)
     
 
 
@@ -45,8 +54,8 @@ class Tkinter:
 
 
         self.ZoneDeJeu = Canvas(self.FrameGauche, width=self.Largeur, height = self.Hauteur)
-        Terrain = PhotoImage(file = "image/terrainFond.png")
-        self.ZoneDeJeu.create_image(0,0,anchor=NW,image=Terrain)
+        """ Terrain = PhotoImage(file = "image/terrainFond.png") """
+        """ self.ZoneDeJeu.create_image(0,0,anchor=NW,image=Terrain) """
         self.ZoneDeJeu.pack(padx=10, pady=10)
 
         self.Vaisseau=self.ZoneDeJeu.create_rectangle(POSX,POSY,TailleVaisseau*2+POSX,TailleVaisseau*2+POSY,fill='maroon')
@@ -108,7 +117,7 @@ class Tkinter:
 
         
         frameCntProj = 2
-        imageProj = [PhotoImage(file='image/Shuriken/Shuriken.gif',format = 'gif -index %i' %(i)) for i in range(frameCntProj)]
+        """ imageProj = [PhotoImage(file='image/Shuriken/Shuriken.gif',format = 'gif -index %i' %(i)) for i in range(frameCntProj)] """
 
 
         max = len(self.myEnemy)-1
