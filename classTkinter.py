@@ -23,16 +23,31 @@ class Tkinter:
         self.myEnemy = []
         self.FrameGauche=None
         self.ProjectileEnemy = []
+        self.difficulty=None
+        self.loadTerrain=None
+        self.loaddedTerrain=None
+        self.loadKatana=None
+        self.loaddedKatana=None
+        self.Terrain=None
         self.vie=3
+        self.score=0
+        self.txt_vie=None
+        self.Texte=None
+        self.Texte_score=None
 
     def create_background(self):
         self.loadTerrain = Image.open("image/terrainFond.png")
         self.loaddedTerrain =ImageTk.PhotoImage(self.loadTerrain)
+        self.loadKatana = Image.open("image/Katana/Katana.png")
+        self.loaddedKatana =ImageTk.PhotoImage(self.loadKatana)
+        self.loadBarriere = Image.open("image/Fence.png")
+        self.loaddedBarriere =ImageTk.PhotoImage(self.loadBarriere)
         self.Terrain = self.ZoneDeJeu.create_image(0,0,anchor=NW,image= self.loaddedTerrain)
     
 
 
-    def creer_fenetre(self,Tk,Canvas,Button):
+    def creer_fenetre(self,Tk,Canvas,Button,difficulty):
+        self.difficulty=difficulty
         self.mw=Tk()
         self.mw.title('Space Invader')
         self.mw['bg']='grey'
@@ -52,12 +67,26 @@ class Tkinter:
 
         self.FrameGauche = Frame(self.mw)
         self.FrameGauche.pack(side="left")
-
-
+        
+        self.Texte_vie=StringVar()
+        self.Texte_vie.set('Vie : ' + str(self.vie))
+        self.Texte_score=StringVar()
+        self.Texte_score.set('Score : ' + str(self.score))
+        #print(self.Texte_vie.get())
+        Label(self.FrameGauche,textvariable=self.Texte_vie).pack(padx=1, pady=1)
+        Label(self.FrameGauche,textvariable=self.Texte_score).pack(padx=1, pady=1)
+        
+        
         self.ZoneDeJeu = Canvas(self.FrameGauche, width=self.Largeur, height = self.Hauteur)
         """ Terrain = PhotoImage(file = "image/terrainFond.png") """
         """ self.ZoneDeJeu.create_image(0,0,anchor=NW,image=Terrain) """
         self.ZoneDeJeu.pack(padx=10, pady=10)
+           
+        self.loadEnemy = Image.open("image/Ninja/Ninja.png")
+        self.loaddedEnemy =ImageTk.PhotoImage(self.loadEnemy)
+        
+        self.loadShuriken = Image.open("image/Shuriken/Shuriken.png")
+        self.loaddedShuriken =ImageTk.PhotoImage(self.loadShuriken)
 
     def creerVaisseau(self,POSX,POSY):
         """ self.Vaisseau=self.ZoneDeJeu.create_rectangle(POSX,POSY,TailleVaisseau*2+POSX,TailleVaisseau*2+POSY,fill='maroon') """
@@ -77,8 +106,6 @@ class Tkinter:
         """ frameCntEnemie = 5
         imageEnnemie = [PhotoImage(file='image/Ninja/animation/runRight_2.gif',format = 'gif -index %i' %(i)) for i in range(frameCntEnemie)] """
         
-        self.loadEnemy = Image.open("image/Ninja/Ninja.png")
-        self.loaddedEnemy =ImageTk.PhotoImage(self.loadEnemy)
         
 
         while nbEnnemie >= 1:
@@ -94,34 +121,56 @@ class Tkinter:
             nbEnnemie -= 1
 
         
-    def deplacementEnemy(self,vitesse,DY,difficulty):
+    def deplacementEnemy(self,vitesse,DY,difficulty,ma_fenetre):
         
         DX = vitesse
         DY = 0
-
+        
+        
         XtremG = self.myEnemyList[0].getPosX()
         XtremD = self.myEnemyList[-1].getPosX()
+        
+        posy=self.myEnemyList[-1].getPosY()
 
         XtremG += DX
         XtremD += DX    
+        
+        if posy >=900-30:
+            k=0
+            for i in range(len(self.myEnemyList)):
+                del self.myEnemyList[k]
+                self.ZoneDeJeu.delete(self.myEnemy[k])
+                del self.myEnemy[k]
+                
+
+        else:
+            for i in range(len(self.myEnemyList)):
+                posx=self.myEnemyList[i].getPosX()
+                posy=self.myEnemyList[i].getPosY()
+                for o in self.rectangle:
+                    coords_protection=self.ZoneDeJeu.coords(o)
+                    verif_collision=ma_fenetre.collision_enemy_protection(coords_protection[0],coords_protection[1],32/2,posx,posy)
+                    if verif_collision==True:
+                        self.ZoneDeJeu.delete(o)
+                        self.rectangle.remove(o)
+                        
+                
+            if XtremD + 20 > self.Largeur:
+                XtremD= 2*(self.Largeur) - XtremD
+                vitesse = -DX
+                DY = 60
+
+            if XtremG -20 < 0:
+                XtremG = -XtremG
+                vitesse = -DX
+                DY = 60
+
+            for i,val in enumerate(self.myEnemy):
+                self.ZoneDeJeu.move(self.myEnemy[i],DX,DY)
+                self.myEnemyList[i].deplacer(self.myEnemyList[i].getPosX()+DX,self.myEnemyList[i].getPosY()+DY)
 
 
-        if XtremD + 20 > self.Largeur:
-            XtremD= 2*(self.Largeur) - XtremD
-            vitesse = -DX
-            DY = 60
-
-        if XtremG -20 < 0:
-            XtremG = -XtremG
-            vitesse = -DX
-            DY = 60
-
-        for i,val in enumerate(self.myEnemy):
-            self.ZoneDeJeu.move(self.myEnemy[i],DX,DY)
-            self.myEnemyList[i].deplacer(self.myEnemyList[i].getPosX()+DX,self.myEnemyList[i].getPosY()+DY)
-
-
-        self.FrameGauche.after(20,self.deplacementEnemy,vitesse,DY,difficulty)
+        self.FrameGauche.after(20,self.deplacementEnemy,vitesse,DY,difficulty,ma_fenetre)
 
         
     def autoTir(self,difficulty,ma_fenetre):
@@ -138,12 +187,10 @@ class Tkinter:
         coordsEnemyX = self.myEnemyList[rand].getPosX()
         coordsEnemyY = self.myEnemyList[rand].getPosY()
         
-        self.loadShuriken = Image.open("image/Shuriken/Shuriken.png")
-        self.loaddedShuriken =ImageTk.PhotoImage(self.loadShuriken)
         ProjectileEnemylast=self.ZoneDeJeu.create_image(coordsEnemyX,coordsEnemyY, image = self.loaddedShuriken)
 
         self.ProjectileEnemy.append(ProjectileEnemylast)
-        self.FrameGauche.after(750,self.autoTir,difficulty,ma_fenetre)
+        self.FrameGauche.after(400,self.autoTir,difficulty,ma_fenetre)
 
         self.deplacementProjectEautoTir(ProjectileEnemylast,coordsEnemyY,ma_fenetre)
 
@@ -156,13 +203,13 @@ class Tkinter:
             verif_collisionvaisseau=ma_fenetre.collision_projectilee_vaisseau(coords_vaisseau[0],coords_vaisseau[1],self.tailleVaisseau,coords_tir[0]-15,coords_tir[1]-15)
             if verif_collisionvaisseau==True:
                 self.vie=self.vie-1
-                print(self.vie)
+                self.Texte_vie.set('Vie : ' + str(self.vie))
                 self.ZoneDeJeu.delete(t)
                 if t in self.ProjectileEnemy:
                     self.ProjectileEnemy.remove(t)
             for o in self.rectangle:
                 coords_protection=self.ZoneDeJeu.coords(o)
-                verif=ma_fenetre.collision_enemy_protection(coords_protection[0],coords_protection[1],18,coords_tir[0],coords_tir[1])
+                verif=ma_fenetre.collision_enemy_protection(coords_protection[0],coords_protection[1],32/2,coords_tir[0],coords_tir[1])
                 if verif ==True:
                     self.ZoneDeJeu.delete(o)
                     self.rectangle.remove(o)
@@ -174,12 +221,11 @@ class Tkinter:
                 self.ZoneDeJeu.move(ProjectileEnemylast, 0, 20)
                 
             else:
-
                 if t in self.ProjectileEnemy:
                     self.ZoneDeJeu.delete(t)
                     self.ProjectileEnemy.remove(t)
 
-        self.FrameGauche.after(20,self.deplacementProjectEautoTir,ProjectileEnemylast,coordsEnemyY,ma_fenetre)
+        self.FrameGauche.after(100,self.deplacementProjectEautoTir,ProjectileEnemylast,coordsEnemyY,ma_fenetre)
 
 
         
@@ -190,16 +236,16 @@ class Tkinter:
         u=0
         v=0
         coords_vaisseau=self.ZoneDeJeu.coords(self.Vaisseau)
-        if event.keysym=='z' and coords_vaisseau[1]>0:
+        ''' if event.keysym=='z' and coords_vaisseau[1]>0:
             u=0
             v=-20
         if event.keysym=='s' and coords_vaisseau[1]<self.Hauteur+10:
             u=0
-            v=20
-        if event.keysym=='q' and coords_vaisseau[0]>0:
+            v=20 '''
+        if event.keysym=='q' and coords_vaisseau[0]>0+30:
             u=-20
             v=0
-        if event.keysym=='d' and coords_vaisseau[0]<self.Largeur:
+        if event.keysym=='d' and coords_vaisseau[0]<self.Largeur-30:
             u=20
             v=0
         self.ZoneDeJeu.move(self.Vaisseau,u,v)
@@ -208,21 +254,23 @@ class Tkinter:
         coords_vaisseau=self.ZoneDeJeu.coords(self.Vaisseau)
         projectile=Projectile((coords_vaisseau[0]+coords_vaisseau[0])/2,coords_vaisseau[1],20,20)
         
-        self.loadKatana = Image.open("image/Katana/Katana.png")
-        self.loaddedKatana =ImageTk.PhotoImage(self.loadKatana)
-        self.projectile.append(self.ZoneDeJeu.create_image(projectile.px,projectile.py, image = self.loaddedKatana))
         
+        Projectilelast=self.ZoneDeJeu.create_image(projectile.px,projectile.py, image = self.loaddedKatana)
+        self.projectile.append(Projectilelast)
+        self.bouger(Projectilelast,self.difficulty)
+
 
         """ self.projectile.append(self.ZoneDeJeu.create_oval(projectile.px-self.tailleVaisseau+projectile.rayon,projectile.py-self.tailleVaisseau+projectile.rayon,projectile.px+self.tailleVaisseau-projectile.rayon,projectile.py+self.tailleVaisseau-projectile.rayon,fill='purple')) """
 
-    def bouger(self,projectile,ma_fenetre,difficulty):
-        print(self.projectile)
+    def bouger(self,projectilelast,difficulty):
         for t in self.projectile:
             coords_projectile=self.ZoneDeJeu.coords(t)
             k=0
             for i in range(len(self.myEnemyList)):
-                verif_ennemy=ma_fenetre.collision_projectilev_ennemi(self.myEnemyList[k].getPosX()-39/2,self.myEnemyList[k].getPosY()-45/2,39/2,45,coords_projectile[0],coords_projectile[1])
+                verif_ennemy=self.collision_projectilev_ennemi(self.myEnemyList[k].getPosX()-39/2,self.myEnemyList[k].getPosY()-45/2,39/2,45,coords_projectile[0],coords_projectile[1])
                 if verif_ennemy ==True:
+                    self.score=self.score+25
+                    self.Texte_score.set('Score : ' + str(self.score))
                     del self.myEnemyList[k]
                     self.ZoneDeJeu.delete(self.myEnemy[k])
                     del self.myEnemy[k]
@@ -233,7 +281,7 @@ class Tkinter:
                 k=k+1
             for o in self.rectangle:
                 coords_protection=self.ZoneDeJeu.coords(o)
-                verif=ma_fenetre.collision_protection(coords_protection[0],coords_protection[1],18,coords_projectile[0],coords_projectile[1])
+                verif=self.collision_protection(coords_protection[0],coords_protection[1],32/2,coords_projectile[0],coords_projectile[1])
                 if verif ==True:
                     self.ZoneDeJeu.delete(o)
                     self.rectangle.remove(o)
@@ -241,15 +289,16 @@ class Tkinter:
                         self.ZoneDeJeu.delete(t)
                         self.projectile.remove(t)
             if coords_projectile[1]>0:
-                self.ZoneDeJeu.move(t,0,-projectile.vitesse)
+                self.ZoneDeJeu.move(projectilelast,0,-20)
             else:
                 if t in self.projectile:
                     self.ZoneDeJeu.delete(t)
                     self.projectile.remove(t)
-        self.ZoneDeJeu.after(100,ma_fenetre.bouger,projectile,ma_fenetre,difficulty)
+        self.ZoneDeJeu.after(100,self.bouger,projectilelast,difficulty)
 
     def creer_rectangle(self,px,py,taille):
-        self.rectangle.append(self.ZoneDeJeu.create_rectangle(px,py,px+2*taille,py+2*taille,fill='pink'))
+        BarriereLast=self.ZoneDeJeu.create_image(px,py, image = self.loaddedBarriere)
+        self.rectangle.append(BarriereLast)
 
     def collision_protection(self,px,py,taille,cpx,cpy):
         if cpx>=px-taille and cpx<=px+2*taille:
@@ -279,14 +328,8 @@ class Tkinter:
             if cpy+30>=py and cpy<=py+self.tailleVaisseau:
                 return(True)
         return(False)
+    
 
         
 
-        
-
-    def collision_projectilee_vaisseau(self,px,py,taillex,cpx,cpy):
-        if cpx>=px-taillex and cpx<=px+2*taillex:
-            if cpy+30>=py and cpy<=py+self.tailleVaisseau:
-                return(True)
-        return(False)
         
