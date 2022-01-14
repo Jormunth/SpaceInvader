@@ -47,7 +47,7 @@ class Enemy:
         XtremG = enemy_list_object[0].getPosX()
         XtremD = enemy_list_object[-1].getPosX()
 
-        posy=self.myEnemyList[-1].getPosY()
+        posy=enemy_list_object[-1].getPosY()
 
         XtremG += DX
         XtremD += DX    
