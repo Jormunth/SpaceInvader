@@ -71,7 +71,7 @@ class Monde:
             self.enemy_list_image.append(self.fenetre.ZoneDeJeu.create_image(X,Y, image = self.loaddedEnemy))
             NB_ENNEMIE -= 1
 
-        self.enemy_list_object[0].deplacementEnemy(self.VITESSE,self.DY,self.enemy_list_object,self.enemy_list_image,self.LARGEUR)
+        self.enemy_list_object[0].deplacementEnemy(self.VITESSE,self.DY,self.enemy_list_object,self.enemy_list_image,self.LARGEUR,self.enemy_list_object,self.rectangle)
         self.enemy_list_object[0].autoTir(self.DIFFICULTEE,self.enemy_list_object,self.enemy_list_image,self.HAUTEUR)
 
     def creerProtection(self):

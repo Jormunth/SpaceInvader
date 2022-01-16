@@ -48,13 +48,13 @@ class Projectile:
         self.fenetre.FrameGauche.after(20,self.deplacementProjectEautoTir,list_projectilelast,coordsEnemyY,list_projectile,HAUTEUR)
 
 
-    def deplacementProjectEautoTir(self,ProjectileEnemylast,coordsEnemyY,ma_fenetre):
+    def deplacementProjectEautoTir(self,ProjectileEnemylast,coordsEnemyY,ProjectileEnemy,HAUTEUR):
 
         
-        for t in self.ProjectileEnemy:
+        for t in ProjectileEnemy:
             coords_tir = self.ZoneDeJeu.coords(t)
             coords_vaisseau=self.ZoneDeJeu.coords(self.Vaisseau)
-            verif_collisionvaisseau=ma_fenetre.collision_projectilee_vaisseau(coords_vaisseau[0],coords_vaisseau[1],self.tailleVaisseau,coords_tir[0]-15,coords_tir[1]-15)
+            verif_collisionvaisseau=monde.collision_projectilee_vaisseau(coords_vaisseau[0],coords_vaisseau[1],self.tailleVaisseau,coords_tir[0]-15,coords_tir[1]-15)
             if verif_collisionvaisseau==True:
                 self.vie=self.vie-1
                 self.Texte_vie.set('Vie : ' + str(self.vie))

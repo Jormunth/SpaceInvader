@@ -39,7 +39,7 @@ class Enemy:
 
 
 
-    def deplacementEnemy(self,VITESSE,DY,enemy_list_object,enemy_list_image,LARGEUR):
+    def deplacementEnemy(self,VITESSE,DY,enemy_list_object,enemy_list_image,LARGEUR,ennemy_liste_object,rectangle):
         
         DX = VITESSE
         DY = 0
@@ -54,17 +54,17 @@ class Enemy:
 
         if posy >=900-30:
             k=0
-            for i in range(len(self.myEnemyList)):
+            for i in range(len(ennemy_liste_object)):
                 del self.myEnemyList[k]
                 self.ZoneDeJeu.delete(self.myEnemy[k])
                 del self.myEnemy[k]
                 
 
         else:
-            for i in range(len(self.myEnemyList)):
-                posx=self.enemy_list_object[i].getPosX()
-                posy=self.enemy_list_object[i].getPosY()
-                for o in self.rectangle:
+            for i in range(len(ennemy_liste_object)):
+                posx=enemy_list_object[i].getPosX()
+                posy=enemy_list_object[i].getPosY()
+                for o in rectangle:
                     coords_protection=self.ZoneDeJeu.coords(o)
                     verif_collision=self.fenetre.collision_enemy_protection(coords_protection[0],coords_protection[1],32/2,posx,posy)
                     if verif_collision==True:
@@ -86,7 +86,7 @@ class Enemy:
                 enemy_list_object[i].deplacer(enemy_list_object[i].getPosX()+DX,enemy_list_object[i].getPosY()+DY)
 
 
-        self.fenetre.FrameGauche.after(20,self.deplacementEnemy,VITESSE,self.DY,enemy_list_object,enemy_list_image,LARGEUR)
+        self.fenetre.FrameGauche.after(20,self.deplacementEnemy,VITESSE,self.DY,enemy_list_object,enemy_list_image,LARGEUR,ennemy_liste_object,rectangle)
 
 
         
