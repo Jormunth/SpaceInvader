@@ -39,20 +39,32 @@ class Enemy:
 
 
 
-    def deplacementEnemy(self,VITESSE,DY,enemy_list_object,enemy_list_image,LARGEUR,ennemy_liste_object,rectangle):
+    def deplacementEnemy(self,VITESSE,DY,enemy_list_object,enemy_list_image,LARGEUR,ennemy_liste_object,rectangle,CANVAS_WIDTH,CANVAS_HEIGHT):
         
         DX = VITESSE
         DY = 0
+        most_right = 0
+        most_left = CANVAS_WIDTH
 
-        XtremG = enemy_list_object[0].getPosX()
-        XtremD = enemy_list_object[-1].getPosX()
+        for ennemie in enemy_list_object:
+            ennemie_pos_x = ennemie.getPosX()
+            if ennemie_pos_x > most_right:
+                most_right = ennemie_pos_x
+
+        for ennemie in enemy_list_object:
+            ennemie_pos_x = ennemie.getPosX()
+            if ennemie_pos_x < most_left:
+                most_left = ennemie_pos_x
+
+        """ most_left = enemy_list_object[0].getPosX()
+        most_right = enemy_list_object[-1].getPosX() """
 
         posy=enemy_list_object[-1].getPosY()
 
-        XtremG += DX
-        XtremD += DX    
+        most_left += DX
+        most_right += DX    
 
-        if posy >=900-30:
+        if posy >= CANVAS_HEIGHT-30:
             k=0
             for i in range(len(ennemy_liste_object)):
                 del self.myEnemyList[k]
@@ -71,13 +83,13 @@ class Enemy:
                         self.ZoneDeJeu.delete(o)
                         self.rectangle.remove(o)
 
-            if XtremD + 20 > LARGEUR:
-                XtremD= 2*LARGEUR - XtremD
+            if most_right + 20 > CANVAS_WIDTH:
+                most_right= 2*CANVAS_WIDTH - most_right
                 VITESSE = -DX
                 DY = 60
 
-            if XtremG -20 < 0:
-                XtremG = -XtremG
+            if most_left -20 < 0:
+                most_left = -most_left
                 VITESSE = -DX
                 DY = 60
 
@@ -86,7 +98,7 @@ class Enemy:
                 enemy_list_object[i].deplacer(enemy_list_object[i].getPosX()+DX,enemy_list_object[i].getPosY()+DY)
 
 
-        self.fenetre.FrameGauche.after(20,self.deplacementEnemy,VITESSE,self.DY,enemy_list_object,enemy_list_image,LARGEUR,ennemy_liste_object,rectangle)
+        self.fenetre.FrameGauche.after(20,self.deplacementEnemy,VITESSE,self.DY,enemy_list_object,enemy_list_image,LARGEUR,ennemy_liste_object,rectangle,CANVAS_WIDTH,CANVAS_HEIGHT)
 
 
         

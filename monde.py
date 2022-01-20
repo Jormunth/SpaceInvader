@@ -9,10 +9,12 @@ import protection as p
 
 class Monde:
 
-    def __init__(self,fenetre,DIFFICULTEE,DY,VITESSE,LARGEUR,HAUTEUR):
+    def __init__(self,fenetre,DIFFICULTEE,DY,VITESSE,LARGEUR,HAUTEUR,CANVAS_WIDTH,CANVAS_HEIGHT):
         
         self.LARGEUR = LARGEUR
         self.HAUTEUR = HAUTEUR
+        self.CANVAS_WIDTH = CANVAS_WIDTH
+        self.CANVAS_HEIGHT = CANVAS_HEIGHT
         self.fenetre = fenetre
         self.DIFFICULTEE=DIFFICULTEE
         self.DY = DY
@@ -54,6 +56,9 @@ class Monde:
         tag = 0
         PLACEMENT = self.DIFFICULTEE+1
         NB_ENNEMIE = self.DIFFICULTEE
+        LIM_LIGNE = 5
+        compteur = 0
+        DELTA_Y = 1
 
         """ frameCntEnemie = 5
         imageEnnemie = [PhotoImage(file='image/Ninja/animation/runRight_2.gif',format = 'gif -index %i' %(i)) for i in range(frameCntEnemie)] """
@@ -62,23 +67,27 @@ class Monde:
         self.loaddedEnemy =ImageTk.PhotoImage(self.loadEnemy)
 
         while NB_ENNEMIE >= 1:
-            
+
+            if compteur % LIM_LIGNE == 0:
+                compteur = 0
+                DELTA_Y += 60
+
+            compteur += 1
+
             tag += 1
-            X = (self.LARGEUR/PLACEMENT)*tag
-            Y = self.HAUTEUR/20
+            X = (self.LARGEUR/PLACEMENT)*compteur
+            Y = self.HAUTEUR/20 + DELTA_Y
 
             self.enemy_list_object.append(e.Enemy(self,self.fenetre,tag,self.VITESSE, X, Y, self.DY))
             self.enemy_list_image.append(self.fenetre.ZoneDeJeu.create_image(X,Y, image = self.loaddedEnemy))
             NB_ENNEMIE -= 1
 
-        self.enemy_list_object[0].deplacementEnemy(self.VITESSE,self.DY,self.enemy_list_object,self.enemy_list_image,self.LARGEUR,self.enemy_list_object,self.rectangle)
+        self.enemy_list_object[0].deplacementEnemy(self.VITESSE,self.DY,self.enemy_list_object,self.enemy_list_image,self.LARGEUR,self.enemy_list_object,self.rectangle,self.CANVAS_WIDTH,self.CANVAS_HEIGHT)
         self.enemy_list_object[0].autoTir(self.DIFFICULTEE,self.enemy_list_object,self.enemy_list_image,self.HAUTEUR)
 
     def creerProtection(self):
         Protection = p.Protection(self.fenetre,800,900)
-        Protection.forme1(60,700,18,30,2,self.fenetre)   
-
-
+        Protection.forme1(60,700,16,30,2,self.fenetre)   
 
 
     def collision_enemy_protection(self,px,py,taille,cpx,cpy):

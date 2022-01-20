@@ -9,9 +9,11 @@ from PIL import Image, ImageTk
 
 class Fenetre:
 
-    def __init__(self,LARGEUR,HAUTEUR,VIE,DIFFICULTEE,DY,VITESSE):
+    def __init__(self,LARGEUR,HAUTEUR,CANVAS_WIDTH,CANVAS_HEIGHT,VIE,DIFFICULTEE,DY,VITESSE):
         self.LARGEUR=LARGEUR
         self.HAUTEUR=HAUTEUR
+        self.CANVAS_WIDTH = CANVAS_WIDTH
+        self.CANVAS_HEIGHT = CANVAS_HEIGHT
         self.DIFFICULTEE = DIFFICULTEE
         self.DY = DY
         self.VITESSE = VITESSE
@@ -28,7 +30,7 @@ class Fenetre:
         self.txt_VIE=None
         self.Texte=None
         self.Texte_score=None
-        self.partie = p.Partie(self, self.DIFFICULTEE, self.DY, self.VITESSE,self.LARGEUR,self.HAUTEUR)
+        self.partie = p.Partie(self, self.DIFFICULTEE, self.DY, self.VITESSE,self.LARGEUR,self.HAUTEUR, CANVAS_WIDTH, CANVAS_HEIGHT)
         self.creer_fenetre()
 
     def creer_fenetre(self):
@@ -63,7 +65,7 @@ class Fenetre:
         Label(self.FrameGauche,textvariable=self.Texte_score).pack(padx=1, pady=1)
         
         
-        self.ZoneDeJeu = Canvas(self.FrameGauche, width=self.LARGEUR, height = self.HAUTEUR)
+        self.ZoneDeJeu = Canvas(self.FrameGauche, width=self.CANVAS_WIDTH, height = self.CANVAS_HEIGHT)
         self.ZoneDeJeu.pack(padx=10, pady=10)
            
         self.loadEnemy = Image.open("image/Ninja/Ninja.png")
