@@ -77,8 +77,6 @@ class Fenetre:
         self.create_background_image()
 
     def create_background_image(self):
-        self.loadTerrain = Image.open("image/terrainFond.png")
-        self.loaddedTerrain =ImageTk.PhotoImage(self.loadTerrain)
         self.loadKatana = Image.open("image/Katana/Katana.png")
         self.loaddedKatana =ImageTk.PhotoImage(self.loadKatana)
         self.loadBarriere = Image.open("image/Fence.png")
