@@ -6,12 +6,18 @@ class Enemy:
     def __init__(self,monde,fenetre,tag,VITESSE,posX, posY,DY):
         self.fenetre = fenetre
         self.tag=tag
+        self.loadShuriken = None
+        self.loaddedShuriken = None
+        self.loadLance = None
+        self.loaddedLance = None
         self.posX=posX
         self.posY=posY
         self.VITESSE=VITESSE
         self.DY=DY
         self.ProjectileEnemy = []
         self.monde = monde
+
+        self.image()
 
     def getTag(self):
         return self.tag
@@ -38,6 +44,13 @@ class Enemy:
         print("Je tire")
 
 
+    def image(self):
+
+        self.loadShuriken = Image.open("image/Shuriken/Shuriken.png")
+        self.loaddedShuriken =ImageTk.PhotoImage(self.loadShuriken)
+
+        self.loadLance = Image.open("image/Shieldmaiden/Lance1.png")
+        self.loaddedLance =ImageTk.PhotoImage(self.loadLance)
 
     def deplacementEnemy(self,VITESSE,DY,enemy_list_object,enemy_list_image,LARGEUR,ennemy_liste_object,rectangle,CANVAS_WIDTH,CANVAS_HEIGHT):
         
@@ -101,25 +114,45 @@ class Enemy:
         self.fenetre.FrameGauche.after(20,self.deplacementEnemy,VITESSE,self.DY,enemy_list_object,enemy_list_image,LARGEUR,ennemy_liste_object,rectangle,CANVAS_WIDTH,CANVAS_HEIGHT)
 
 
-        
+
+
     def autoTir(self,difficulty,enemy_list_object,enemy_list_image,HAUTEUR):
      
         frameCntProj = 2
         """ imageProj = [PhotoImage(file='image/Shuriken/Shuriken.gif',format = 'gif -index %i' %(i)) for i in range(frameCntProj)] """
+        if len(enemy_list_object) > 1:
+            max = len(enemy_list_image)-1
 
-        max = len(enemy_list_image)-1
+            rand=random.randint(0,max)
 
-        rand=random.randint(0,max)
+            coordsEnemyX = enemy_list_object[rand].getPosX()
+            coordsEnemyY = enemy_list_object[rand].getPosY()
+            
 
-        coordsEnemyX = enemy_list_object[rand].getPosX()
-        coordsEnemyY = enemy_list_object[rand].getPosY()
-        
-        self.loadShuriken = Image.open("image/Shuriken/Shuriken.png")
-        self.loaddedShuriken =ImageTk.PhotoImage(self.loadShuriken)
-        ProjectileEnemylast=self.fenetre.ZoneDeJeu.create_image(coordsEnemyX,coordsEnemyY, image = self.loaddedShuriken)
+            
 
-        self.ProjectileEnemy.append(ProjectileEnemylast)
-        self.fenetre.FrameGauche.after(750,self.autoTir,difficulty,enemy_list_object,enemy_list_image,HAUTEUR)
+            
+            self.fenetre.FrameGauche.after(750,self.autoTir,difficulty,enemy_list_object,enemy_list_image,HAUTEUR)
 
-        projectile_enemy=project.Projectile(self,self.monde,self.fenetre,self.getPosX,self.getPosY,20,self.VITESSE)
-        projectile_enemy.deplacementProjectEautoTir(ProjectileEnemylast,coordsEnemyY,self.ProjectileEnemy,HAUTEUR)
+            projectile_enemy=project.Projectile(self,self.monde,self.fenetre,self.getPosX,self.getPosY,20,self.VITESSE)
+            ProjectileEnemylast=self.fenetre.ZoneDeJeu.create_image(coordsEnemyX,coordsEnemyY, image = self.loaddedShuriken)
+            self.ProjectileEnemy.append(ProjectileEnemylast)
+            projectile_enemy.deplacementProjectEautoTir(ProjectileEnemylast,coordsEnemyY,self.ProjectileEnemy,HAUTEUR)
+
+
+        else:
+            max = len(enemy_list_image)-1
+
+            rand=random.randint(0,max)
+
+            coordsEnemyX = enemy_list_object[rand].getPosX()
+            coordsEnemyY = enemy_list_object[rand].getPosY()
+
+            ProjectileEnemylast=self.fenetre.ZoneDeJeu.create_image(coordsEnemyX,coordsEnemyY, image = self.loaddedLance)
+
+            self.ProjectileEnemy.append(ProjectileEnemylast)
+            self.fenetre.FrameGauche.after(750,self.autoTir,difficulty,enemy_list_object,enemy_list_image,HAUTEUR)
+
+            projectile_enemy=project.Projectile(self,self.monde,self.fenetre,self.getPosX,self.getPosY,20,self.VITESSE)
+            projectile_enemy.deplacementProjectEautoTir(ProjectileEnemylast,coordsEnemyY,self.ProjectileEnemy,HAUTEUR)
+

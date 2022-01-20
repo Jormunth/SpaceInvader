@@ -45,4 +45,4 @@ class Vaisseau:
         
         Projectilelast=self.fenetre.ZoneDeJeu.create_image(projectile.px,projectile.py, image = self.fenetre.loaddedKatana)
         self.projectile_list.append(Projectilelast)
-        projectile.bouger(Projectilelast,self.projectile_list,self.enemy_list_object)
+        projectile.bouger(Projectilelast,self.projectile_list)

@@ -13,11 +13,15 @@ class Projectile:
         self.vaisseau=vaisseau
 
 
-    def deplacementProjectEautoTir(self,list_projectilelast,coordsEnemyY,list_projectile,HAUTEUR):
+    def deplacementProjectEautoTir(self,projectilelast,coordsEnemyY,list_projectile,HAUTEUR):
 
-        self.fenetre.FrameGauche.after(20,self.deplacementProjectEautoTir,list_projectilelast,coordsEnemyY,list_projectile,HAUTEUR)
+
+        self.fenetre.ZoneDeJeu.move(projectilelast,0,20)
+        self.fenetre.FrameGauche.after(20,self.deplacementProjectEautoTir,projectilelast,coordsEnemyY,list_projectile,HAUTEUR)
 
 
     def bouger(self,projectilelast,difficulty):
-        
-        self.ZoneDeJeu.after(100,self.bouger,projectilelast,difficulty)  
+
+
+        self.fenetre.ZoneDeJeu.move(projectilelast,0,-20)
+        self.fenetre.ZoneDeJeu.after(100,self.bouger,projectilelast,difficulty)  

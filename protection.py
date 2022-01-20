@@ -25,6 +25,7 @@ class Protection:
         for i in range(nombre_carréx):
             for t in range(nombre_carré_y):
                 self.creer_rectangle(x+i*2*taille_carré,y+t*2*taille_carré,taille_carré)
+        
 
     def collision_protection(self,px,py,taille,cpx,cpy):
         if cpx>=px-taille and cpx<=px+2*taille:

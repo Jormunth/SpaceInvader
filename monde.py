@@ -1,5 +1,7 @@
 from tkinter import *
 from PIL import Image, ImageTk
+import random
+import time
 from protection import Protection
 import vaisseau as V
 import enemy as e
@@ -28,14 +30,31 @@ class Monde:
         self.Vaisseau = None
         self.enemy_list_object = []
         self.enemy_list_image = []
+        self.loadEnemy = None
+        self.loaddedEnemy = None
+        self.loadSuperEnemy = None
+        self.loaddedSuperEnemy = None
+        self.loadJoueur = None
+        self.loaddedJoueurs = None
+        self.loadKatana = None
+        self.loaddedKatana = None
+        self.loadBarriere = None
+        self.loaddedBarriere = None
+        self.niveau = 0
 
+        self.create_background_image()
         self.gere_le_monde()
 
     def gere_le_monde(self):
         self.creerEnemy()
         self.creerJoueur()
         self.creerProtection()
-
+        self.verifNiveau()
+        
+        aleatoire = random.randint(1,10)
+        aleatoire *= 1000
+        self.fenetre.FrameGauche.after(aleatoire,self.creerSuperEnnemie)
+        
         """ ma_fenetre.ZoneDeJeu.after(20,ma_fenetre.bouger,projectile,ma_fenetre,self.DIFFICULTEE) """
        
 
@@ -43,8 +62,6 @@ class Monde:
         POSX = 800
         POSY = 900
 
-        self.loadJoueur = Image.open("image/Samurai/Samurai.png")
-        self.loaddedJoueurs =ImageTk.PhotoImage(self.loadJoueur)
         self.Vaisseau = self.fenetre.ZoneDeJeu.create_image(POSX,POSY, image = self.loaddedJoueurs)
         joueur = V.Vaisseau(self,self.fenetre,800,900,63,self.Vaisseau,self.LARGEUR,self.HAUTEUR,self.enemy_list_object,self.enemy_list_image)
 
@@ -54,7 +71,7 @@ class Monde:
     def creerEnemy(self):
                 
         tag = 0
-        PLACEMENT = self.DIFFICULTEE+1
+        PLACEMENT = 10
         NB_ENNEMIE = self.DIFFICULTEE
         LIM_LIGNE = 5
         compteur = 0
@@ -62,9 +79,6 @@ class Monde:
 
         """ frameCntEnemie = 5
         imageEnnemie = [PhotoImage(file='image/Ninja/animation/runRight_2.gif',format = 'gif -index %i' %(i)) for i in range(frameCntEnemie)] """
-        
-        self.loadEnemy = Image.open("image/Ninja/Ninja.png")
-        self.loaddedEnemy =ImageTk.PhotoImage(self.loadEnemy)
 
         while NB_ENNEMIE >= 1:
 
@@ -85,6 +99,50 @@ class Monde:
         self.enemy_list_object[0].deplacementEnemy(self.VITESSE,self.DY,self.enemy_list_object,self.enemy_list_image,self.LARGEUR,self.enemy_list_object,self.rectangle,self.CANVAS_WIDTH,self.CANVAS_HEIGHT)
         self.enemy_list_object[0].autoTir(self.DIFFICULTEE,self.enemy_list_object,self.enemy_list_image,self.HAUTEUR)
 
+    def creerSuperEnnemie(self):
+        X = (self.LARGEUR/2)
+        Y = self.HAUTEUR/20
+        
+        super_enemy_list_object=[]
+        super_enemy_list_image=[]
+        super_enemy_list_object.append(e.Enemy(self,self.fenetre,1,self.VITESSE*2, X, Y, self.DY))
+        super_enemy_list_image.append(self.fenetre.ZoneDeJeu.create_image(X,Y, image = self.loaddedSuperEnemy))
+        super_enemy_list_object[0].deplacementEnemy(self.VITESSE*2,0,super_enemy_list_object,super_enemy_list_image,self.LARGEUR,super_enemy_list_object,self.rectangle,self.CANVAS_WIDTH,self.CANVAS_HEIGHT)
+        super_enemy_list_object[0].autoTir(self.DIFFICULTEE,super_enemy_list_object,super_enemy_list_image,self.HAUTEUR)
+
+    def create_background_image(self):
+
+        self.loadEnemy = Image.open("image/Ninja/Ninja.png")
+        self.loaddedEnemy =ImageTk.PhotoImage(self.loadEnemy)
+        self.loadSuperEnemy = Image.open("image/Shieldmaiden/Shieldmaiden.png")
+        self.loaddedSuperEnemy =ImageTk.PhotoImage(self.loadSuperEnemy)
+        self.loadJoueur = Image.open("image/Samurai/Samurai.png")
+        self.loaddedJoueurs =ImageTk.PhotoImage(self.loadJoueur)
+        self.loadKatana = Image.open("image/Katana/Katana.png")
+        self.loaddedKatana =ImageTk.PhotoImage(self.loadKatana)
+        self.loadBarriere = Image.open("image/Fence.png")
+        self.loaddedBarriere =ImageTk.PhotoImage(self.loadBarriere)
+
+
+    def verifNiveau(self):
+        if len(self.enemy_list_object) == 0:
+            self.niveau += 1
+            self.DIFFICULTEE +=4
+            self.gere_le_monde()
+        else:
+            self.fenetre.FrameGauche.after(10,self.verifNiveau)    
+
+
+
+
+    def collision(self,x1,y1,y2,x2):
+        tag = self.fenetre.ZoneDeJeu.find_overlapping(x1, y1, x2, y2)
+        objets = self.fenetre.ZoneDeJeu.find_withtag(tag)
+        self.fenetre.ZoneDeJeu.delete(objets)
+        self.projectile.remove(objets)
+
+
+
     def creerProtection(self):
         Protection = p.Protection(self.fenetre,800,900)
         Protection.forme1(60,700,16,30,2,self.fenetre)   
@@ -95,6 +153,7 @@ class Monde:
             if cpy>=py:
                 return(True)
         return(False)
+
 
     def collision_projectilev_ennemi(self,px,py,taillex,tailley,cpx,cpy):
         if cpx>=px-taillex and cpx<=px+2*taillex:
