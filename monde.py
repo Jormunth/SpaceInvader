@@ -72,10 +72,10 @@ class Monde:
         POSY = 850
 
         self.Vaisseau = self.fenetre.ZoneDeJeu.create_image(POSX,POSY, image = self.loaddedJoueurs)
-        joueur = V.Vaisseau(self,self.fenetre,800,900,63,self.Vaisseau,self.LARGEUR,self.HAUTEUR,self.enemy_list_object,self.enemy_list_image,self.controle_up, self.controle_down, self.controle_left, self.controle_right,self.controle_shot)
+        self.joueur = V.Vaisseau(self,self.fenetre,800,900,63,self.Vaisseau,self.LARGEUR,self.HAUTEUR,self.enemy_list_object,self.enemy_list_image,self.controle_up, self.controle_down, self.controle_left, self.controle_right,self.controle_shot)
 
-        self.fenetre.ZoneDeJeu.bind('<Key>',joueur.Clavier)
-        self.fenetre.ZoneDeJeu.bind(f'<{self.controle_shot}>',joueur.creer_projectile)
+        self.fenetre.ZoneDeJeu.bind('<Key>',self.joueur.Clavier)
+        self.fenetre.ZoneDeJeu.bind(f'<{self.controle_shot}>',self.joueur.creer_projectile)
         self.collision_vaisseau()
         
     def creerEnemy(self):
