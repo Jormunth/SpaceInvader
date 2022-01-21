@@ -41,6 +41,7 @@ class Vaisseau:
         if event.keysym==self.controle_right and coords_vaisseau[0]<self.LARGEUR:
             u=20
             v=0
+        self.deplacer(u,v)
         self.fenetre.ZoneDeJeu.move(self.Vaisseau,u,v)
     
     
@@ -51,3 +52,20 @@ class Vaisseau:
         Projectilelast=self.fenetre.ZoneDeJeu.create_image(projectile.px,projectile.py, image = self.fenetre.loaddedKatana)
         self.projectile_list.append(Projectilelast)
         projectile.bouger(Projectilelast,self.projectile_list)
+
+
+    def getPosX(self):
+        return self.POSX
+
+    def getPosY(self):
+        return self.POSY
+
+    def getTaille(self):
+        return self.TailleVaisseau
+
+    def getListeKatana(self):
+        return self.projectile_list
+
+    def maj_katana(self,x):
+        l=self.projectile_list.remove(x)
+        self.projectile_list=l
