@@ -25,6 +25,10 @@ class Protection:
         for i in range(nombre_carréx):
             for t in range(nombre_carré_y):
                 self.creer_rectangle(x+i*2*taille_carré,y+t*2*taille_carré,taille_carré)
+
+    def getRectangle(self):
+        self.rectangle
+        return self.rectangle
         
 
     def collision_protection(self,px,py,taille,cpx,cpy):
@@ -32,3 +36,7 @@ class Protection:
             if cpy<=py+taille*3:
                 return(True)
         return(False)
+
+    def maj_rectangle(self,x):
+        l=self.rectangle.remove(x)
+        self.rectangle=l

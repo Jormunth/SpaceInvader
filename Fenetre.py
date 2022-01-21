@@ -30,6 +30,7 @@ class Fenetre:
         self.txt_VIE=None
         self.Texte=None
         self.Texte_score=None
+        self.Texte_VIE=None
         self.partie = p.Partie(self, self.DIFFICULTEE, self.DY, self.VITESSE,self.LARGEUR,self.HAUTEUR, CANVAS_WIDTH, CANVAS_HEIGHT)
         self.creer_fenetre()
 
