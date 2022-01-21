@@ -10,7 +10,7 @@ from PIL import Image, ImageTk
 
 class Partie:
 
-    def __init__(self, fenetre,DIFFICULTEE,DY,VITESSE,LARGEUR,HAUTEUR,CANVAS_WIDTH,CANVAS_HEIGHT,):
+    def __init__(self, fenetre,DIFFICULTEE,DY,VITESSE,LARGEUR,HAUTEUR,CANVAS_WIDTH,CANVAS_HEIGHT,controle_up,controle_down,controle_left,controle_right,controle_shot):
         self.DIFFICULTEE = DIFFICULTEE
         self.DY = DY
         self.VITESSE = VITESSE
@@ -21,6 +21,11 @@ class Partie:
         self.CANVAS_HEIGHT = CANVAS_HEIGHT
         self.loadTerrain = None
         self.loaddedTerrain = None
+        self.controle_up=controle_up
+        self.controle_down=controle_down
+        self.controle_left=controle_left
+        self.controle_right=controle_right
+        self.controle_shot=controle_shot
         
 
     def lancementPartie(self):
@@ -38,4 +43,4 @@ class Partie:
         -AJOUTER LE RESET DU SCORE ET DES VIE DANS LE LABEL DE LA CLASSE TK
         """
 
-        monde=m.Monde(self.fenetre,self.DIFFICULTEE, self.DY,self.VITESSE,self.LARGEUR,self.HAUTEUR,self.CANVAS_WIDTH,self.CANVAS_HEIGHT)
+        monde=m.Monde(self.fenetre,self.DIFFICULTEE, self.DY,self.VITESSE,self.LARGEUR,self.HAUTEUR,self.CANVAS_WIDTH,self.CANVAS_HEIGHT,self.controle_up, self.controle_down, self.controle_left, self.controle_right,self.controle_shot)

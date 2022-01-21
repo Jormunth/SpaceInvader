@@ -2,7 +2,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 import projectile as project
 class Vaisseau:
-    def __init__(self,monde,fenetre,POSX,POSY,TailleVaisseau,Vaisseau,LARGEUR,HAUTEUR,enemy_list_object,enemy_list_image):
+    def __init__(self,monde,fenetre,POSX,POSY,TailleVaisseau,Vaisseau,LARGEUR,HAUTEUR,enemy_list_object,enemy_list_image,controle_up,controle_down,controle_left,controle_right,controle_shot):
         self.fenetre=fenetre
         self.POSX=POSX
         self.POSY=POSY
@@ -14,6 +14,11 @@ class Vaisseau:
         self.monde=monde
         self.enemy_list_object=enemy_list_object
         self.enemy_list_image=enemy_list_image
+        self.controle_up=controle_up
+        self.controle_down=controle_down
+        self.controle_left=controle_left
+        self.controle_right=controle_right
+        self.controle_shot=controle_shot
 
 
     def deplacer(self,u,v):
@@ -24,16 +29,16 @@ class Vaisseau:
         u=0
         v=0
         coords_vaisseau=self.fenetre.ZoneDeJeu.coords(self.Vaisseau)
-        """ if event.keysym=='z' and coords_vaisseau[1]>0:
+        if event.keysym==self.controle_up and coords_vaisseau[1]>0:
             u=0
             v=-20
-        if event.keysym=='s' and coords_vaisseau[1]<self.HAUTEUR+10:
+        if event.keysym==self.controle_down and coords_vaisseau[1]<self.HAUTEUR+10:
             u=0
-            v=20 """
-        if event.keysym=='q' and coords_vaisseau[0]>0:
+            v=20
+        if event.keysym==self.controle_left and coords_vaisseau[0]>0:
             u=-20
             v=0
-        if event.keysym=='d' and coords_vaisseau[0]<self.LARGEUR:
+        if event.keysym==self.controle_right and coords_vaisseau[0]<self.LARGEUR:
             u=20
             v=0
         self.fenetre.ZoneDeJeu.move(self.Vaisseau,u,v)

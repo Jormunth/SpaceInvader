@@ -96,12 +96,12 @@ class Enemy:
                         self.ZoneDeJeu.delete(o)
                         self.rectangle.remove(o)
 
-            if most_right + 20 > CANVAS_WIDTH:
+            if most_right + 32 > CANVAS_WIDTH:
                 most_right= 2*CANVAS_WIDTH - most_right
                 VITESSE = -DX
                 DY = 60
 
-            if most_left -20 < 0:
+            if most_left -32 < 0:
                 most_left = -most_left
                 VITESSE = -DX
                 DY = 60

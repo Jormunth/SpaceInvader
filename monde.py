@@ -11,7 +11,7 @@ import protection as p
 
 class Monde:
 
-    def __init__(self,fenetre,DIFFICULTEE,DY,VITESSE,LARGEUR,HAUTEUR,CANVAS_WIDTH,CANVAS_HEIGHT):
+    def __init__(self,fenetre,DIFFICULTEE,DY,VITESSE,LARGEUR,HAUTEUR,CANVAS_WIDTH,CANVAS_HEIGHT,controle_up,controle_down,controle_left,controle_right,controle_shot):
         
         self.LARGEUR = LARGEUR
         self.HAUTEUR = HAUTEUR
@@ -41,6 +41,13 @@ class Monde:
         self.loadBarriere = None
         self.loaddedBarriere = None
         self.niveau = 0
+        self.controle_up=controle_up
+        self.controle_down=controle_down
+        self.controle_left=controle_left
+        self.controle_right=controle_right
+        self.controle_shot=controle_shot
+        
+        
 
         self.create_background_image()
         self.gere_le_monde()
@@ -60,13 +67,13 @@ class Monde:
 
     def creerJoueur(self):
         POSX = 800
-        POSY = 900
+        POSY = 850
 
         self.Vaisseau = self.fenetre.ZoneDeJeu.create_image(POSX,POSY, image = self.loaddedJoueurs)
-        joueur = V.Vaisseau(self,self.fenetre,800,900,63,self.Vaisseau,self.LARGEUR,self.HAUTEUR,self.enemy_list_object,self.enemy_list_image)
+        joueur = V.Vaisseau(self,self.fenetre,800,900,63,self.Vaisseau,self.LARGEUR,self.HAUTEUR,self.enemy_list_object,self.enemy_list_image,self.controle_up, self.controle_down, self.controle_left, self.controle_right,self.controle_shot)
 
         self.fenetre.ZoneDeJeu.bind('<Key>',joueur.Clavier)
-        self.fenetre.ZoneDeJeu.bind('<Button-1>',joueur.creer_projectile)
+        self.fenetre.ZoneDeJeu.bind(f'<{self.controle_shot}>',joueur.creer_projectile)
 
     def creerEnemy(self):
                 
