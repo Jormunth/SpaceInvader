@@ -18,6 +18,7 @@ class Enemy:
         self.monde = monde
         self.enemy_list_object=None
         self.super_ennemy_liste_object=None
+        self.ProjectileEnemy2 = ["coucou"]
 
         self.image()
 
@@ -221,7 +222,6 @@ class Enemy:
             projectile_enemy.deplacementProjectEautoTir(ProjectileEnemylast,coordsEnemyY,self.ProjectileEnemy,HAUTEUR)
 
     def SuperAutoTir(self,difficulty,enemy_list_image,HAUTEUR):
-
      
         frameCntProj = 2
         """ imageProj = [PhotoImage(file='image/Shuriken/Shuriken.gif',format = 'gif -index %i' %(i)) for i in range(frameCntProj)] """
@@ -242,30 +242,34 @@ class Enemy:
 
             projectile_enemy=project.Projectile(self,self.monde,self.fenetre,self.getPosX,self.getPosY,20,self.VITESSE)
             ProjectileEnemylast=self.fenetre.ZoneDeJeu.create_image(coordsEnemyX,coordsEnemyY, image = self.loaddedShuriken)
-            self.ProjectileEnemy.append(ProjectileEnemylast)
+            self.ProjectileEnemy2.append(ProjectileEnemylast)
             projectile_enemy.deplacementProjectEautoTir(ProjectileEnemylast,coordsEnemyY,self.ProjectileEnemy,HAUTEUR)
 
 
         else:
             max = len(self.super_ennemy_liste_object)-1
+            if max>=0:
 
-            rand=random.randint(0,max)
+                rand=random.randint(0,max)
 
-            coordsEnemyX = self.super_ennemy_liste_object[rand].getPosX()
-            coordsEnemyY = self.super_ennemy_liste_object[rand].getPosY()
+                coordsEnemyX = self.super_ennemy_liste_object[rand].getPosX()
+                coordsEnemyY = self.super_ennemy_liste_object[rand].getPosY()
 
-            ProjectileEnemylast=self.fenetre.ZoneDeJeu.create_image(coordsEnemyX,coordsEnemyY, image = self.loaddedLance)
+                ProjectileEnemylast=self.fenetre.ZoneDeJeu.create_image(coordsEnemyX,coordsEnemyY, image = self.loaddedLance)
 
-            self.ProjectileEnemy.append(ProjectileEnemylast)
-            self.fenetre.FrameGauche.after(750,self.SuperAutoTir,difficulty,enemy_list_image,HAUTEUR)
+                self.ProjectileEnemy2.append(ProjectileEnemylast)
+                self.fenetre.FrameGauche.after(750,self.SuperAutoTir,difficulty,enemy_list_image,HAUTEUR)
 
-            projectile_enemy=project.Projectile(self,self.monde,self.fenetre,self.getPosX,self.getPosY,20,self.VITESSE)
-            projectile_enemy.deplacementProjectEautoTir(ProjectileEnemylast,coordsEnemyY,self.ProjectileEnemy,HAUTEUR)
+                projectile_enemy=project.Projectile(self,self.monde,self.fenetre,self.getPosX,self.getPosY,20,self.VITESSE)
+                projectile_enemy.deplacementProjectEautoTir(ProjectileEnemylast,coordsEnemyY,self.ProjectileEnemy2,HAUTEUR)
 
 
         
     def getListeProjectile(self):
         return(self.ProjectileEnemy)
+
+    def getListeProjectile2(self):
+        return(self.ProjectileEnemy2)
 
     def maj_enemy_liste_objet(self,x):
         self.enemy_list_object=x

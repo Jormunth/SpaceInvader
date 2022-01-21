@@ -22,7 +22,8 @@ class Projectile:
                 self.fenetre.FrameGauche.after(20,self.deplacementProjectEautoTir,projectilelast,coordsEnemyY,list_projectile,HAUTEUR)
             else:
                 self.fenetre.ZoneDeJeu.delete(projectilelast)
-                list_projectile.remove(projectilelast)
+                if projectilelast in list_projectile:
+                    list_projectile.remove(projectilelast)
         
 
 

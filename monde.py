@@ -160,6 +160,7 @@ class Monde:
         self.Protection1.forme1(60,700,16,30,2,self.fenetre) 
         self.collision_katana()  
         self.collision_shuriken()
+        self.collision_lance()
 
 
     def collision_shuriken(self):
@@ -177,6 +178,22 @@ class Monde:
                                         self.fenetre.ZoneDeJeu.delete(i)
                                         self.fenetre.ZoneDeJeu.delete(o)
         self.fenetre.FrameGauche.after(20,self.collision_shuriken)
+
+    def collision_lance(self):
+        liste_rectangle=self.Protection1.getRectangle()
+        LP=self.super_enemy_list_object[0].getListeProjectile2()
+        if len(LP)!=0:
+            for o in LP:
+                coords_shuriken=self.fenetre.ZoneDeJeu.coords(o)
+                if len(coords_shuriken)!=0:
+                    px=coords_shuriken[0]
+                    py=coords_shuriken[1]
+                    truc=self.fenetre.ZoneDeJeu.find_overlapping(px-30/2, py-30/2, px+30/2, py+30/2)
+                    for i in truc:
+                        if i in liste_rectangle :
+                                        self.fenetre.ZoneDeJeu.delete(i)
+                                        self.fenetre.ZoneDeJeu.delete(o)
+        self.fenetre.FrameGauche.after(20,self.collision_lance)
 
 
 
