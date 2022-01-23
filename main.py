@@ -1,3 +1,7 @@
+# gere le lancement du jeu
+# Mathieu Zeman / Gaelle Leroux
+# realise entre decembre 2021 et janvier 2022 
+
 from tkinter import *
 import partie as play
 import Fenetre as ctk

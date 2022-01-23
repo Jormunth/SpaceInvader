@@ -1,3 +1,8 @@
+# gere le lancement des parties ainsi que l'enregistrement des scores
+# Mathieu Zeman / Gaelle Leroux
+# realise entre decembre 2021 et janvier 2022 
+
+
 from tkinter import *
 from vaisseau import *
 from projectile import *
@@ -29,6 +34,9 @@ class Partie:
         
 
     def lancementPartie(self):
+        # fonctions qui lance la prochaine partie
+        # entree : Aucune
+        # sortie : Aucune
         
         self.fenetre.ZoneDeJeu.delete('all')
 
